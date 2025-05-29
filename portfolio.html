@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio's Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .nav-link {
+            position: relative;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: currentColor;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Success Banner -->
+    <div class="bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-2">
+                <i data-lucide="trophy" class="w-6 h-6"></i>
+                <span class="text-lg font-semibold">Welcome to My Portfolio!</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="bg-white shadow-md sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold text-indigo-600">Portfolio</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#about" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">About</a>
+                    <a href="#education" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Education</a>
+                    <a href="#projects" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Projects</a>
+                    <a href="#skills" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Skills</a>
+                    <a href="#contact" class="nav-link text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- About Section -->
+    <section id="about" class="min-h-screen flex items-center justify-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white pt-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <img id="profile-image" src="" alt="Profile Picture" class="w-32 h-32 rounded-full mx-auto mb-6 border-4 border-white shadow-lg hidden">
+            <h1 id="portfolio-name" class="text-4xl sm:text-5xl font-bold mb-4"></h1>
+            <p id="portfolio-qualification" class="text-lg sm:text-xl max-w-2xl mx-auto"></p>
+            <a href="#contact" class="mt-6 inline-block bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition">Get in Touch</a>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Education</h2>
+            <div id="education-container" class="space-y-6"></div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My Projects</h2>
+            <div id="projects-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">My Skills</h2>
+            <div id="skills-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4"></div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-12">Get in Touch</h2>
+            <div class="max-w-lg mx-auto">
+                <p class="text-gray-600 mb-6 text-center">Feel free to reach out via phone or connect with me!</p>
+                <div id="contact-container" class="space-y-4"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p id="footer-text"></p>
+        </div>
+    </footer>
+
+    <script>
+const portfolioData = {"html": "\n        <div class=\"bg-gradient-to-r from-green-500 to-emerald-600 text-white py-4\">\n            <div class=\"container mx-auto px-6 text-center\">\n                <div class=\"flex items-center justify-center space-x-2\">\n                    <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" data-lucide=\"trophy\" class=\"lucide lucide-trophy w-6 h-6\"><path d=\"M6 9H4.5a2.5 2.5 0 0 1 0-5H6\"></path><path d=\"M18 9h1.5a2.5 2.5 0 0 0 0-5H18\"></path><path d=\"M4 22h16\"></path><path d=\"M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22\"></path><path d=\"M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22\"></path><path d=\"M18 2H6v7a6 6 0 0 0 12 0V2Z\"></path></svg>\n                    <span class=\"text-lg font-semibold\">\ud83c\udf89 Congratulations! Your AI Portfolio is Ready!</span>\n                </div>\n            </div>\n        </div>\n        <nav class=\"bg-white shadow-md fixed w-full z-10\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n                <div class=\"flex justify-between h-16\">\n                    <div class=\"flex items-center\">\n                        <span class=\"text-2xl font-bold text-indigo-600\">Portfolio</span>\n                    </div>\n                    <div class=\"flex items-center space-x-4\">\n                        <a href=\"#about\" class=\"text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium\">About</a>\n                        <a href=\"#education\" class=\"text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium\">Education</a>\n                        <a href=\"#projects\" class=\"text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium\">Projects</a>\n                        <a href=\"#skills\" class=\"text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium\">Skills</a>\n                        <a href=\"#contact\" class=\"text-gray-600 hover:text-indigo-600 px-3 py-2 rounded-md text-sm font-medium\">Contact</a>\n                    </div>\n                </div>\n            </div>\n        </nav>\n        <section id=\"about\" class=\"min-h-screen flex items-center justify-center text-white pt-16 bg-gradient-to-r from-indigo-500 to-indigo-600\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center\">\n                <img id=\"profile-image\" src=\"\" alt=\"Profile Picture\" class=\"w-32 h-32 rounded-full mx-auto mb-6 border-4 border-white shadow-lg hidden\">\n                <h1 id=\"portfolio-name\" class=\"text-4xl sm:text-5xl font-bold mb-4\">Mani</h1>\n                <p id=\"portfolio-qualification\" class=\"text-lg sm:text-xl max-w-2xl mx-auto\">B.Tech Graduate \u2022 Class of 2024 \u2022 Fluent in Hindi</p>\n                <a href=\"#contact\" class=\"mt-6 inline-block bg-white text-indigo-600 px-6 py-3 rounded-full font-semibold hover:bg-gray-200 transition\">Get in Touch</a>\n            </div>\n        </section>\n        <section id=\"education\" class=\"py-20 bg-white\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n                <h2 class=\"text-3xl font-bold text-center mb-12\">Education</h2>\n                <div id=\"education-container\" class=\"space-y-6\"></div>\n            </div>\n        </section>\n        <section id=\"projects\" class=\"py-20 bg-gray-100\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n                <h2 class=\"text-3xl font-bold text-center mb-12\">My Projects</h2>\n                <div id=\"projects-container\" class=\"grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8\"></div>\n            </div>\n        </section>\n        <section id=\"skills\" class=\"py-20 bg-white\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n                <h2 class=\"text-3xl font-bold text-center mb-12\">My Skills</h2>\n                <div id=\"skills-container\" class=\"grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4\"><div class=\"bg-indigo-600 text-white rounded-lg shadow-md p-4 text-center\">Python</div><div class=\"bg-indigo-600 text-white rounded-lg shadow-md p-4 text-center\">React</div></div>\n            </div>\n        </section>\n        <section id=\"contact\" class=\"py-20 bg-gray-100\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8\">\n                <h2 class=\"text-3xl font-bold text-center mb-12\">Get in Touch</h2>\n                <div class=\"max-w-lg mx-auto\">\n                    <p class=\"text-gray-600 mb-6 text-center\">Feel free to reach out via phone or connect with me!</p>\n                    <div id=\"contact-container\" class=\"space-y-4\">\n                     <p class=\"text-center\"><strong>Phone:</strong> <a href=\"tel:9999\" class=\"text-indigo-600 hover:underline\">9999</a></p>\n                 </div>\n                </div>\n            </div>\n        </section>\n        <footer class=\"bg-gray-800 text-white py-6\">\n            <div class=\"max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center\">\n                <p id=\"footer-text\">\u00a9 2025 Mani. All rights reserved.</p>\n            </div>\n        </footer>\n        <div class=\"fixed bottom-6 right-6 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg animate-bounce\">\n            <div class=\"flex items-center\">\n                <div class=\"w-4 h-4 bg-white rounded-full mr-3\"></div>\n                <span>Portfolio generated successfully!</span>\n            </div>\n        </div>\n    ", "colorScheme": "red"};
+
+        // Initialize Lucide icons
+        lucide.createIcons();
+
+        // Function to render portfolio data
+        function renderPortfolio(data) {
+            const colorScheme = data.colorScheme || 'indigo';
+            
+            // Update about section
+            const profileImage = document.getElementById('profile-image');
+            if (data.profile_image) {
+                profileImage.src = data.profile_image;
+                profileImage.classList.remove('hidden');
+            }
+            document.getElementById('portfolio-name').textContent = data.name;
+            document.getElementById('portfolio-qualification').textContent = 
+                `${data.qualification} Graduate • Class of ${data.graduation_year}${data.language ? ` • Fluent in ${data.language}` : ''}`;
+            
+            // Update education section
+            const educationContainer = document.getElementById('education-container');
+            educationContainer.innerHTML = data.education.map(edu => `
+                <div class="bg-gray-100 rounded-lg p-6">
+                    <h3 class="text-xl font-semibold mb-2">${edu.degree || ''}</h3>
+                    <p class="text-gray-600">${edu.institution || ''}</p>
+                    <p class="text-gray-500">${edu.year || ''}${edu.grade ? ` • ${edu.grade}` : ''}</p>
+                    ${edu.description ? `<p class="text-gray-600 mt-2">${edu.description}</p>` : ''}
+                </div>
+            `).join('');
+            
+            // Update projects section
+            const projectsContainer = document.getElementById('projects-container');
+            projectsContainer.innerHTML = data.projects.map(project => `
+                <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition">
+                    <h3 class="text-xl font-semibold mb-2">${project.title || ''}</h3>
+                    <p class="text-gray-600 mb-4">${project.description || ''}</p>
+                    ${project.link ? `<a href="${project.link}" class="text-${colorScheme}-600 font-medium hover:underline">View Project →</a>` : ''}
+                </div>
+            `).join('');
+            
+            // Update skills section
+            const skillsContainer = document.getElementById('skills-container');
+            skillsContainer.innerHTML = data.skills.map(skill => `
+                <div class="bg-${colorScheme}-600 text-white rounded-lg shadow-md p-4 text-center">
+                    ${skill}
+                </div>
+            `).join('');
+            
+            // Update contact section
+            const contactContainer = document.getElementById('contact-container');
+            contactContainer.innerHTML = data.phone ? `
+                <p class="text-center">
+                    <strong>Phone:</strong> 
+                    <a href="tel:${data.phone}" class="text-${colorScheme}-600 hover:underline">${data.phone}</a>
+                </p>
+            ` : '';
+            
+            // Update footer
+            document.getElementById('footer-text').textContent = 
+                `© ${new Date().getFullYear()} ${data.name || ''}. All rights reserved.`;
+            
+            // Update color scheme
+            document.getElementById('about').className = 
+                `min-h-screen flex items-center justify-center bg-gradient-to-r from-${colorScheme}-500 to-${colorScheme}-600 text-white pt-16`;
+        }
+
+        // Load portfolio data from URL parameters
+        window.addEventListener('load', () => {
+    renderPortfolio(portfolioData);
+            try {
+                const portfolioData = JSON.parse(decodeURIComponent(window.location.hash.slice(1)));
+                renderPortfolio(portfolioData);
+            } catch (error) {
+                console.error('Error loading portfolio data:', error);
+            }
+        });
+    </script>
+</body>
+</html> 
