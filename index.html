@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mani | Software Engineer, Data Lead, AI Engineer</title>
+  <meta name="description" content="What I've built in applied AI, and where each project actually stands.">
+  <script>
+    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#work">Skip to projects</a>
+
+  <header class="site-head wrap">
+    <a class="brand" href="#top" aria-label="Home">
+      <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="2.6" height="14" rx="1.3"/><rect x="10.7" y="10" width="2.6" height="9" rx="1.3" opacity=".5"/><rect x="16.4" y="5" width="2.6" height="14" rx="1.3"/></svg>
+      <span class="brand-text">
+        <span class="brand-name" data-site="name">Mani</span>
+        <small data-site="tagline">Software Engineer / Data Lead / AI Engineer</small>
+      </span>
+    </a>
+    <nav aria-label="Site">
+      <a href="#work">work</a>
+      <a href="#about">about</a>
+      <a href="#education">education</a>
+      <a href="setup.html">setup</a>
+      <a href="ideas.html">ideas</a>
+      <a href="articles.html">articles</a>
+      <a href="photos.html">photos</a>
+      <a data-site="resume" href="" hidden>résumé</a>
+      <button class="theme" type="button" aria-label="Switch to light theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="top" class="wrap">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="kicker">Based in India, open to remote and relocation</p>
+        <h1>Five years of data work. Now building AI for real users.</h1>
+        <p class="intro">I started as a software engineer and moved into data, most recently as a data lead: sitting with business teams, finding the real question, and building the pipelines that answered it. I now bring that to AI, building RAG systems, fine-tunes and agents one tested piece at a time. Each project below says how far along it really is.</p>
+      </div>
+      <ul class="featured" aria-label="Featured projects"></ul>
+    </section>
+
+    <section id="work" class="block" aria-labelledby="work-h">
+      <div class="section-head">
+        <h2 id="work-h">Projects</h2>
+        <p>Labelled by how far along they really are</p>
+      </div>
+      <div class="filter" role="group" aria-label="Filter projects by status"></div>
+      <div class="projects" aria-live="polite"></div>
+    </section>
+
+    <section id="about" class="block" aria-labelledby="about-h">
+      <div class="section-head">
+        <h2 id="about-h">About</h2>
+      </div>
+      <div class="about-grid">
+        <div class="prose">
+          <p>I've spent more than five years as a software engineer and in data analytics, most recently as a data lead. That work was mostly translation: sitting with business teams, working out what they actually needed, and building the pipelines and reports that answered it.</p>
+          <p>I lived and worked in the US from 2017 to 2022, then moved back to India. In 2026 I left my job to work full time on moving into applied AI engineering.</p>
+          <p>I learn by building one piece at a time and writing down why each choice was made. For skills I want to own, like quantisation and serving, I type the code myself instead of generating it. Where AI wrote code on a project, the project says so.</p>
+        </div>
+        <aside class="side">
+          <h3>Looking for</h3>
+          <p>Forward deployed engineering and applied AI roles, where the job is getting a model to work for a real customer with real data.</p>
+          <h3>Where</h3>
+          <p>Based in India. Open to US remote, Europe, Canada and Australia.</p>
+          <h3>Contact</h3>
+          <ul class="contact"></ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="education" class="block" aria-labelledby="edu-h">
+      <div class="section-head">
+        <h2 id="edu-h">Education</h2>
+      </div>
+      <ol class="edu"></ol>
+    </section>
+  </main>
+
+  <footer class="site-foot wrap">
+    <div>
+      <span class="foot-name" data-site="name">Mani</span>
+      <p>Last updated <time data-updated></time></p>
+    </div>
+    <ul class="contact foot-links"></ul>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mani | Ideas</title>
+  <meta name="description" content="Projects I want to build next.">
+  <script>
+    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#ideas-main">Skip to content</a>
+
+  <header class="site-head wrap">
+    <a class="brand" href="index.html" aria-label="Home">
+      <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="2.6" height="14" rx="1.3"/><rect x="10.7" y="10" width="2.6" height="9" rx="1.3" opacity=".5"/><rect x="16.4" y="5" width="2.6" height="14" rx="1.3"/></svg>
+      <span class="brand-text">
+        <span class="brand-name" data-site="name">Mani</span>
+        <small data-site="tagline">Software Engineer / Data Lead / AI Engineer</small>
+      </span>
+    </a>
+    <nav aria-label="Site">
+      <a href="index.html#work">work</a>
+      <a href="index.html#about">about</a>
+      <a href="index.html#education">education</a>
+      <a href="setup.html">setup</a>
+      <a href="ideas.html" class="active" aria-current="page">ideas</a>
+      <a href="articles.html">articles</a>
+      <a href="photos.html">photos</a>
+      <a data-site="resume" href="" hidden>résumé</a>
+      <button class="theme" type="button" aria-label="Switch to light theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="ideas-main" class="wrap">
+    <section class="page-intro">
+      <h1>Ideas</h1>
+      <p class="intro">Projects I want to build but haven't started. Some will turn into real projects, some won't. When I start one, it moves to the project list on the home page.</p>
+    </section>
+    <ol class="ideas"></ol>
+  </main>
+
+  <footer class="site-foot wrap">
+    <div>
+      <span class="foot-name" data-site="name">Mani</span>
+      <p>Last updated <time data-updated></time></p>
+    </div>
+    <ul class="contact foot-links"></ul>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>
