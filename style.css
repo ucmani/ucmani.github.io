@@ -237,7 +237,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 /* About page */
 .about-hero {
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 13rem;
   gap: 2rem;
   align-items: start;
   padding: 3.5rem 0 1rem;
@@ -448,7 +448,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   .hero { grid-template-columns: 1fr; gap: 2.5rem; }
   .project, .edu li, .facts > div { grid-template-columns: 1fr; gap: 0.75rem; }
   .about-hero { grid-template-columns: 1fr; padding-top: 2.25rem; }
-  .portrait { width: 11rem; }
+  .portrait { width: 11rem; order: -1; }
   .setup-group { grid-template-columns: 1fr; gap: 1.25rem; }
   .story-part { grid-template-columns: 1fr; gap: 0.75rem; }
   .idea, .article { grid-template-columns: 1fr; gap: 0.6rem; }
