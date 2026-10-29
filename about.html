@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mani | About</title>
+  <meta name="description" content="Background, education, and the kind of work I'm looking for.">
+  <script>
+    try { var t = localStorage.getItem("theme"); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="skip" href="#about-main">Skip to content</a>
+
+  <header class="site-head wrap">
+    <a class="brand" href="index.html" aria-label="Home">
+      <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="2.6" height="14" rx="1.3"/><rect x="10.7" y="10" width="2.6" height="9" rx="1.3" opacity=".5"/><rect x="16.4" y="5" width="2.6" height="14" rx="1.3"/></svg>
+      <span class="brand-text">
+        <span class="brand-name" data-site="name">Mani</span>
+        <small data-site="tagline">Software Engineer / Data Lead / AI Engineer</small>
+      </span>
+    </a>
+    <nav aria-label="Site">
+      <a href="index.html">work</a>
+      <a href="about.html" class="active" aria-current="page">about</a>
+      <a href="setup.html">setup</a>
+      <a href="ideas.html" data-optional="ideas" hidden>ideas</a>
+      <a href="articles.html">articles</a>
+      <a href="photos.html" data-optional="photos" hidden>photos</a>
+      <a data-site="resume" href="" hidden>résumé</a>
+      <button class="theme" type="button" aria-label="Switch to light theme">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
+      </button>
+    </nav>
+  </header>
+
+  <main id="about-main" class="wrap">
+    <section class="about-hero">
+      <div class="portrait"></div>
+      <div>
+        <h1>About</h1>
+        <p class="intro about-intro"></p>
+      </div>
+    </section>
+
+    <section id="background" class="block" aria-labelledby="bg-h">
+      <div class="section-head">
+        <h2 id="bg-h">Background</h2>
+      </div>
+      <div class="prose">
+        <p>I've spent more than five years as a software engineer and in data analytics, most recently as a data lead. That work was mostly translation: sitting with business teams, working out what they actually needed, and building the pipelines and reports that answered it.</p>
+        <p>I lived and worked in the US from 2017 to 2022, then moved back to India. In 2026 I left my job to work full time on moving into applied AI engineering.</p>
+        <p>I learn by building one piece at a time and writing down why each choice was made. For skills I want to own, like quantisation and serving, I type the code myself instead of generating it. Where AI wrote code on a project, the project says so.</p>
+      </div>
+    </section>
+
+    <section id="education" class="block" aria-labelledby="edu-h">
+      <div class="section-head">
+        <h2 id="edu-h">Education</h2>
+      </div>
+      <ol class="edu"></ol>
+    </section>
+
+    <section id="work-with-me" class="block" aria-labelledby="wwm-h">
+      <div class="section-head">
+        <h2 id="wwm-h">Work with me</h2>
+      </div>
+      <dl class="facts">
+        <div>
+          <dt>Looking for</dt>
+          <dd>Forward deployed engineering and applied AI roles, where the job is getting a model to work for a real customer with real data.</dd>
+        </div>
+        <div>
+          <dt>Where</dt>
+          <dd>Based in India. Open to US remote, Europe, Canada and Australia.</dd>
+        </div>
+        <div>
+          <dt>Contact</dt>
+          <dd><ul class="contact"></ul></dd>
+        </div>
+      </dl>
+    </section>
+  </main>
+
+  <footer class="site-foot wrap">
+    <div>
+      <span class="foot-name" data-site="name">Mani</span>
+      <p>Last updated <time data-updated></time></p>
+    </div>
+    <ul class="contact foot-links"></ul>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="site.js"></script>
+</body>
+</html>

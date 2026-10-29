@@ -29,6 +29,14 @@
 
   /* ---------- Shared: theme, site details, favicon, contact, footer ---------- */
 
+  // Optional pages: show their nav links when on; send visitors home when off
+  var PAGES = SITE.pages || {};
+  var thisPage = document.body.getAttribute("data-optional");
+  if (thisPage && PAGES[thisPage] === false) { location.replace("index.html"); return; }
+  document.querySelectorAll("nav [data-optional]").forEach(function (a) {
+    if (PAGES[a.getAttribute("data-optional")] !== false) a.hidden = false;
+  });
+
   var root = document.documentElement;
   var themeBtn = $(".theme");
   function syncThemeBtn() {
@@ -207,7 +215,27 @@
     }
   }
 
-  /* ---------- Home: education ---------- */
+  /* ---------- About: intro, photo, education ---------- */
+
+  var introEl = $(".about-intro");
+  if (introEl) {
+    if (SITE.intro) introEl.innerHTML = rich(SITE.intro);
+    else if (DRAFT) introEl.innerHTML = ph("Short introduction: who you are and what you do now");
+    else introEl.hidden = true;
+  }
+
+  var portrait = $(".portrait");
+  if (portrait) {
+    if (SITE.photo) {
+      portrait.innerHTML = '<img src="' + esc(SITE.photo) + '" alt="' + esc(SITE.name || "") + '">';
+    } else if (DRAFT) {
+      portrait.classList.add("photo-ph");
+      portrait.innerHTML = ph("photos/me.jpg") + '<span class="ph-note">Set SITE.photo in data.js</span>';
+    } else {
+      portrait.hidden = true;
+      portrait.parentNode.classList.add("no-photo");
+    }
+  }
 
   var eduEl = $(".edu");
   if (eduEl) {

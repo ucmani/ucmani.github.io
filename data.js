@@ -7,6 +7,11 @@ window.SITE = {
   github: "",
   linkedin: "",
   resume: "",                         // path to PDF
+  photo: "",                          // e.g. "photos/me.jpg"
+  intro: "",                          // opening paragraph on the about page
+
+  // optional pages: true shows them in the nav
+  pages: { ideas: false, photos: false },
 
   // false hides empty fields and sample entries
   showPlaceholders: true

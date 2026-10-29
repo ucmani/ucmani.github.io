@@ -17,7 +17,7 @@
   <a class="skip" href="#work">Skip to projects</a>
 
   <header class="site-head wrap">
-    <a class="brand" href="#top" aria-label="Home">
+    <a class="brand" href="index.html" aria-label="Home">
       <svg class="mark" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="2.6" height="14" rx="1.3"/><rect x="10.7" y="10" width="2.6" height="9" rx="1.3" opacity=".5"/><rect x="16.4" y="5" width="2.6" height="14" rx="1.3"/></svg>
       <span class="brand-text">
         <span class="brand-name" data-site="name">Mani</span>
@@ -25,13 +25,12 @@
       </span>
     </a>
     <nav aria-label="Site">
-      <a href="#work">work</a>
-      <a href="#about">about</a>
-      <a href="#education">education</a>
+      <a href="index.html" class="active" aria-current="page">work</a>
+      <a href="about.html">about</a>
       <a href="setup.html">setup</a>
-      <a href="ideas.html">ideas</a>
+      <a href="ideas.html" data-optional="ideas" hidden>ideas</a>
       <a href="articles.html">articles</a>
-      <a href="photos.html">photos</a>
+      <a href="photos.html" data-optional="photos" hidden>photos</a>
       <a data-site="resume" href="" hidden>résumé</a>
       <button class="theme" type="button" aria-label="Switch to light theme">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>
@@ -56,34 +55,6 @@
       </div>
       <div class="filter" role="group" aria-label="Filter projects by status"></div>
       <div class="projects" aria-live="polite"></div>
-    </section>
-
-    <section id="about" class="block" aria-labelledby="about-h">
-      <div class="section-head">
-        <h2 id="about-h">About</h2>
-      </div>
-      <div class="about-grid">
-        <div class="prose">
-          <p>I've spent more than five years as a software engineer and in data analytics, most recently as a data lead. That work was mostly translation: sitting with business teams, working out what they actually needed, and building the pipelines and reports that answered it.</p>
-          <p>I lived and worked in the US from 2017 to 2022, then moved back to India. In 2026 I left my job to work full time on moving into applied AI engineering.</p>
-          <p>I learn by building one piece at a time and writing down why each choice was made. For skills I want to own, like quantisation and serving, I type the code myself instead of generating it. Where AI wrote code on a project, the project says so.</p>
-        </div>
-        <aside class="side">
-          <h3>Looking for</h3>
-          <p>Forward deployed engineering and applied AI roles, where the job is getting a model to work for a real customer with real data.</p>
-          <h3>Where</h3>
-          <p>Based in India. Open to US remote, Europe, Canada and Australia.</p>
-          <h3>Contact</h3>
-          <ul class="contact"></ul>
-        </aside>
-      </div>
-    </section>
-
-    <section id="education" class="block" aria-labelledby="edu-h">
-      <div class="section-head">
-        <h2 id="edu-h">Education</h2>
-      </div>
-      <ol class="edu"></ol>
     </section>
   </main>
 
