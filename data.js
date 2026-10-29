@@ -7,7 +7,7 @@ window.SITE = {
   github: "",
   linkedin: "",
   resume: "",                         // path to PDF
-  photo: "",                          // e.g. "photos/me.jpg"
+  photo: "photos/me.jpg",
   headline: "",                       // about page title
   intro: "",                          // opening paragraph on the about page
 

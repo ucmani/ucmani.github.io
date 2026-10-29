@@ -260,7 +260,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   border: 1px solid var(--line);
   background: var(--bg-elevated);
 }
-.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
 .portrait-wrap figcaption { margin-top: 0.9rem; font: 0.68rem/1.6 var(--mono); color: var(--fg-muted); }
 .about-section {
   display: grid;
