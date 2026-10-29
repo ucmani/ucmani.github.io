@@ -76,6 +76,8 @@
       if (c.href) return '<li><a href="' + esc(c.href) + '">' + c.label + "</a></li>";
       return DRAFT ? "<li>" + ph(c.label) + "</li>" : "";
     }).join("");
+    var row = ul.closest(".facts > div");
+    if (row && !ul.children.length && !SITE.resume) row.hidden = true;
   });
 
   var updated = $("[data-updated]");
@@ -217,6 +219,12 @@
 
   /* ---------- About: intro, photo, education ---------- */
 
+  var headlineEl = $(".about-headline");
+  if (headlineEl) {
+    if (SITE.headline) headlineEl.textContent = SITE.headline;
+    else if (DRAFT) headlineEl.innerHTML = ph("Headline: one line on what you do");
+  }
+
   var introEl = $(".about-intro");
   if (introEl) {
     if (SITE.intro) introEl.innerHTML = rich(SITE.intro);
@@ -230,10 +238,10 @@
       portrait.innerHTML = '<img src="' + esc(SITE.photo) + '" alt="' + esc(SITE.name || "") + '">';
     } else if (DRAFT) {
       portrait.classList.add("photo-ph");
-      portrait.innerHTML = ph("photos/me.jpg") + '<span class="ph-note">Set SITE.photo in data.js</span>';
+      portrait.innerHTML = ph("photos/me.jpg");
     } else {
-      portrait.hidden = true;
-      portrait.parentNode.classList.add("no-photo");
+      portrait.parentNode.hidden = true;
+      $(".about-hero").classList.add("no-photo");
     }
   }
 

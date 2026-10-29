@@ -237,47 +237,66 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 /* About page */
 .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 13rem;
-  gap: 2rem;
+  grid-template-columns: minmax(0, 1fr) 11.25rem;
+  gap: 3rem;
   align-items: start;
-  padding: 3.5rem 0 1rem;
+  padding: 2rem 0 3rem;
 }
 .about-hero.no-photo { grid-template-columns: 1fr; }
-.about-hero h1 {
-  font: 500 clamp(2.1rem, 3.8vw, 3.4rem)/1.05 var(--sans);
-  letter-spacing: -0.055em;
-  margin: 0 0 1.25rem;
+.kicker.mono { font: 0.72rem var(--mono); }
+.about-headline {
+  font: 500 clamp(2.2rem, 4vw, 3.3rem)/1.08 var(--serif);
+  letter-spacing: -0.03em;
+  margin: 0 0 1.5rem;
+  max-width: 18ch;
 }
-.portrait { aspect-ratio: 4 / 5; border-radius: 4px; overflow: hidden; background: var(--bg-elevated); }
+.about-hero .intro { max-width: 58ch; }
+.portrait-wrap { margin: 0; }
+.portrait-wrap[hidden] { display: none; }
+.portrait {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--bg-elevated);
+}
 .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
-.prose p { margin: 0 0 1.25rem; color: var(--fg-muted); max-width: 62ch; }
-.facts { margin: 0; }
-.facts > div {
+.portrait-wrap figcaption { margin-top: 0.9rem; font: 0.68rem/1.6 var(--mono); color: var(--fg-muted); }
+.about-section {
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
   gap: 2rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--line);
+  padding: 2.5rem 0;
+  border-top: 1px solid var(--line-strong);
 }
-.facts dt { margin-top: 0.2rem; font: 0.75rem var(--mono); color: var(--fg-muted); }
-.facts dd { margin: 0; color: var(--fg-soft); max-width: 62ch; }
+.about-section.stacked { grid-template-columns: 1fr; }
+.about-section[hidden] { display: none; }
+.about-section h2 { font: 500 2rem/1.2 var(--serif); letter-spacing: -0.03em; margin: 0; }
+.prose p { margin: 0 0 1.25rem; color: var(--fg-muted); max-width: 62ch; line-height: 1.75; }
+.prose p:last-child { margin-bottom: 0; }
+.facts { margin: 0; display: grid; gap: 1.25rem; }
+.facts dt { margin-bottom: 0.3rem; font: 0.72rem var(--mono); color: var(--fg-muted); }
+.facts dd { margin: 0; color: var(--fg-soft); font-size: 0.95rem; max-width: 58ch; }
+.facts .more { display: inline-block; margin-top: 0.9rem; }
+.facts .more[hidden] { display: none; }
 .contact { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem 1.2rem; }
 .contact a { font: 0.8rem var(--mono); color: var(--fg-muted); }
 .contact a:hover { color: var(--fg); }
 
 /* Education */
-.edu { list-style: none; margin: 0; padding: 0; }
-.edu li {
+.edu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
-  grid-template-columns: 13rem minmax(0, 1fr);
-  gap: 2rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--line);
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1.75rem 2rem;
 }
 .years { margin: 0.3rem 0 0; font: 0.75rem var(--mono); color: var(--fg-muted); }
-.edu h3 { font: 500 1.3rem/1.3 var(--serif); letter-spacing: -0.02em; margin: 0 0 0.25rem; }
-.school { margin: 0; color: var(--fg-muted); font-size: 0.92rem; }
-.edu-note { margin: 0.4rem 0 0; color: var(--fg-muted); font-size: 0.875rem; }
+.edu .years { margin: 0 0 0.6rem; font-size: 0.72rem; }
+.edu h3 { font: 500 0.95rem/1.5 var(--sans); margin: 0; }
+.school { margin: 0; color: var(--fg-soft); font-size: 0.9rem; }
+.edu-note { margin: 0.4rem 0 0; color: var(--fg-muted); font-size: 0.85rem; }
 
 /* Setup page */
 .page-intro { padding: 3.5rem 0 1rem; }
@@ -446,9 +465,10 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 
 @media (max-width: 860px) {
   .hero { grid-template-columns: 1fr; gap: 2.5rem; }
-  .project, .edu li, .facts > div { grid-template-columns: 1fr; gap: 0.75rem; }
-  .about-hero { grid-template-columns: 1fr; padding-top: 2.25rem; }
-  .portrait { width: 11rem; order: -1; }
+  .project { grid-template-columns: 1fr; gap: 0.75rem; }
+  .about-hero { grid-template-columns: 1fr; }
+  .portrait-wrap { display: none; }
+  .about-section { grid-template-columns: 1fr; gap: 1.25rem; }
   .setup-group { grid-template-columns: 1fr; gap: 1.25rem; }
   .story-part { grid-template-columns: 1fr; gap: 0.75rem; }
   .idea, .article { grid-template-columns: 1fr; gap: 0.6rem; }

@@ -41,16 +41,18 @@
   <main id="about-main" class="wrap">
     <section class="about-hero">
       <div>
-        <h1>About</h1>
+        <p class="kicker mono" data-site="name">Mani</p>
+        <h1 class="about-headline">About</h1>
         <p class="intro about-intro"></p>
       </div>
-      <div class="portrait"></div>
+      <figure class="portrait-wrap">
+        <div class="portrait"></div>
+        <figcaption data-site="name">Mani</figcaption>
+      </figure>
     </section>
 
-    <section id="background" class="block" aria-labelledby="bg-h">
-      <div class="section-head">
-        <h2 id="bg-h">Background</h2>
-      </div>
+    <section id="background" class="about-section" aria-labelledby="bg-h">
+      <h2 id="bg-h">Background</h2>
       <div class="prose">
         <p>I've spent more than five years as a software engineer and in data analytics, most recently as a data lead. That work was mostly translation: sitting with business teams, working out what they actually needed, and building the pipelines and reports that answered it.</p>
         <p>I lived and worked in the US from 2017 to 2022, then moved back to India. In 2026 I left my job to work full time on moving into applied AI engineering.</p>
@@ -58,17 +60,13 @@
       </div>
     </section>
 
-    <section id="education" class="block" aria-labelledby="edu-h">
-      <div class="section-head">
-        <h2 id="edu-h">Education</h2>
-      </div>
+    <section id="education" class="about-section stacked" aria-labelledby="edu-h">
+      <h2 id="edu-h">Education</h2>
       <ol class="edu"></ol>
     </section>
 
-    <section id="work-with-me" class="block" aria-labelledby="wwm-h">
-      <div class="section-head">
-        <h2 id="wwm-h">Work with me</h2>
-      </div>
+    <section id="work-with-me" class="about-section" aria-labelledby="wwm-h">
+      <h2 id="wwm-h">Work with me</h2>
       <dl class="facts">
         <div>
           <dt>Looking for</dt>
@@ -80,7 +78,10 @@
         </div>
         <div>
           <dt>Contact</dt>
-          <dd><ul class="contact"></ul></dd>
+          <dd>
+            <ul class="contact"></ul>
+            <a class="more" data-site="resume" href="" hidden>Résumé</a>
+          </dd>
         </div>
       </dl>
     </section>

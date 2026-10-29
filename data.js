@@ -8,6 +8,7 @@ window.SITE = {
   linkedin: "",
   resume: "",                         // path to PDF
   photo: "",                          // e.g. "photos/me.jpg"
+  headline: "",                       // about page title
   intro: "",                          // opening paragraph on the about page
 
   // optional pages: true shows them in the nav
