@@ -237,7 +237,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 /* About page */
 .about-hero {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 11.25rem;
+  grid-template-columns: minmax(0, 1fr) 13rem;
   gap: 3rem;
   align-items: start;
   padding: 2rem 0 3rem;
@@ -254,13 +254,13 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 .portrait-wrap { margin: 0; }
 .portrait-wrap[hidden] { display: none; }
 .portrait {
-  aspect-ratio: 1;
+  aspect-ratio: 2 / 3;
   border-radius: 6px;
   overflow: hidden;
   border: 1px solid var(--line);
   background: var(--bg-elevated);
 }
-.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 12%; }
+.portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
 .portrait-wrap figcaption { margin-top: 0.9rem; font: 0.68rem/1.6 var(--mono); color: var(--fg-muted); }
 .about-section {
   display: grid;
@@ -467,7 +467,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   .hero { grid-template-columns: 1fr; gap: 2.5rem; }
   .project { grid-template-columns: 1fr; gap: 0.75rem; }
   .about-hero { grid-template-columns: 1fr; gap: 1.5rem; }
-  .portrait-wrap { order: -1; width: 7rem; }
+  .portrait-wrap { order: -1; width: 9rem; }
   .portrait-wrap figcaption { display: none; }
   .about-section { grid-template-columns: 1fr; gap: 1.25rem; }
   .setup-group { grid-template-columns: 1fr; gap: 1.25rem; }
