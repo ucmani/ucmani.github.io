@@ -117,12 +117,7 @@
       if (p.stack && p.stack.length) h += '<p class="stack">' + p.stack.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</p>";
       h += '</div><div class="body"><h3><a class="title-link" href="' + storyUrl(p) + '">' + esc(p.title) + "</a></h3>";
       h += '<p class="summary">' + rich(p.summary) + "</p>";
-      var links = (p.links || []).map(function (l) {
-        if (l.url) return '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>';
-        return ph(l.label + " link");
-      }).filter(Boolean);
-      links.unshift('<a class="more" href="' + storyUrl(p) + '" aria-label="Read more about ' + esc(p.title) + '">Read more</a>');
-      h += '<p class="links">' + links.join("") + "</p>";
+      h += '<p class="links"><a class="more" href="' + storyUrl(p) + '" aria-label="Read more about ' + esc(p.title) + '">Read more</a></p>';
       return h + "</div></article>";
     }).join("");
 
@@ -337,23 +332,24 @@
   if (setupEl) {
     var toc = $(".setup-toc");
     var groups = SETUP.map(function (g) {
-      var items = (g.items || []).filter(function (it) { return DRAFT || it.name; });
-      return { title: g.title, note: g.note, items: items };
-    }).filter(function (g) { return g.items.length; });
+      var rows = (g.rows || []).filter(function (r) { return r.tools && r.tools.length; });
+      return { title: g.title, note: g.note, rows: rows };
+    }).filter(function (g) { return g.rows.length; });
 
     if (toc) toc.innerHTML = groups.map(function (g) {
       return '<li><a href="#s-' + slug(g.title) + '">' + esc(g.title) + "</a></li>";
     }).join("");
 
+    var tool = function (t) {
+      return "<li>" + (t.url ? '<a href="' + esc(t.url) + '">' + esc(t.name) + "</a>" : esc(t.name)) + "</li>";
+    };
     setupEl.innerHTML = groups.map(function (g) {
-      var h = '<section class="setup-group" id="s-' + slug(g.title) + '"><div class="setup-head"><h2>' + esc(g.title) + "</h2>" +
-        (g.note ? "<p>" + esc(g.note) + "</p>" : "") + '</div><dl class="tools">';
-      h += g.items.map(function (it) {
-        var name = it.name ? (it.url ? '<a href="' + esc(it.url) + '">' + esc(it.name) + "</a>" : esc(it.name)) : ph(it.placeholder || "Add item");
-        var why = it.why ? rich(it.why) : ph("What you use it for");
-        return '<div class="tool"><dt>' + name + "</dt><dd>" + why + "</dd></div>";
-      }).join("");
-      return h + "</dl></section>";
+      return '<section class="setup-group" id="s-' + slug(g.title) + '"><div class="setup-head"><h2>' + esc(g.title) + "</h2>" +
+        (g.note ? "<p>" + esc(g.note) + "</p>" : "") + '</div><dl class="tools">' +
+        g.rows.map(function (r) {
+          return '<div class="tool"><dt>' + esc(r.label) + '</dt><dd><ul class="tool-chips">' + r.tools.map(tool).join("") + "</ul>" +
+            (r.note ? '<p class="tool-note">' + rich(r.note) + "</p>" : "") + "</dd></div>";
+        }).join("") + "</dl></section>";
     }).join("");
   }
   /* ---------- Ideas page ---------- */

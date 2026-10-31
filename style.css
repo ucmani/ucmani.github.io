@@ -332,8 +332,14 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   border-top: 1px solid var(--line);
 }
 .tool:first-child { border-top: 0; padding-top: 0.25rem; }
-.tool dt { font: 500 0.95rem/1.5 var(--sans); }
+.tool dt { font: 500 0.95rem/1.5 var(--sans); padding-top: 0.3rem; }
 .tool dd { margin: 0; color: var(--fg-muted); font-size: 0.92rem; line-height: 1.6; max-width: 56ch; }
+.tool-chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.6rem; align-content: flex-start; }
+.tool-chips li { border: 1px solid var(--line-strong); border-radius: 100px; padding: 0.3rem 0.9rem; font-size: 0.9rem; line-height: 1.5; color: var(--fg-soft); }
+.tool-chips a { color: inherit; text-decoration: none; }
+.tool-chips li:hover { border-color: var(--fg-muted); }
+.tool-chips li:hover a { color: var(--fg); }
+.tool-note { margin: 0.55rem 0 0; font-size: 0.875rem; color: var(--fg-muted); }
 
 /* Links from project rows to story pages */
 .title-link { text-decoration: none; }
