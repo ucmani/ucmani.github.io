@@ -12,19 +12,82 @@ window.SITE = {
   intro: "I build RAG systems, agents and LLM applications, backed by more than 5 years of software, data and analytics engineering. My projects pair practical engineering with evaluation.",                          // opening paragraph on the about page
 
   // optional pages: true shows them in the nav
-  pages: { ideas: false, photos: false },
+  pages: { ideas: false, photos: false, articles: false },
 
   // false hides empty fields and sample entries
   showPlaceholders: true
 };
 
-// items: { name, url?, why }
+// rows: [{ label, tools: [{ name, url? }], note? }]
 window.SETUP = [
   {
     title: "Machine",
     note: "What I build on day to day",
-    items: [
-      { name: "", placeholder: "Laptop and specs", why: "" }
+    rows: [
+      { label: "Laptop", tools: [{ name: "MacBook Air (M4)" }], note: "16 GB RAM, 512 GB SSD" },
+      { label: "Monitor", tools: [{ name: "ZEBRONICS curved" }], note: "32 inch" }
+    ]
+  },
+  {
+    title: "Editor, terminal and AI coding",
+    rows: [
+      { label: "Editors", tools: [{ name: "PyCharm", url: "https://www.jetbrains.com/pycharm/" }, { name: "Cursor", url: "https://cursor.com" }, { name: "VS Code", url: "https://code.visualstudio.com" }] },
+      { label: "AI coding", tools: [{ name: "Claude Code", url: "https://www.anthropic.com/claude-code" }, { name: "GitHub Copilot", url: "https://github.com/features/copilot" }] },
+      { label: "Terminal", tools: [{ name: "Warp", url: "https://www.warp.dev" }, { name: "iTerm2", url: "https://iterm2.com" }, { name: "tmux", url: "https://github.com/tmux/tmux" }] },
+      { label: "Shell", tools: [{ name: "zsh", url: "https://www.zsh.org" }, { name: "Oh My Zsh", url: "https://ohmyz.sh" }] }
+    ]
+  },
+  {
+    title: "Models and compute",
+    rows: [
+      { label: "Frameworks", tools: [{ name: "PyTorch", url: "https://pytorch.org" }, { name: "Transformers", url: "https://huggingface.co/docs/transformers" }] },
+      { label: "Orchestration", tools: [{ name: "LangGraph", url: "https://www.langchain.com/langgraph" }, { name: "LangChain", url: "https://www.langchain.com" }, { name: "LlamaIndex", url: "https://www.llamaindex.ai" }] },
+      { label: "Local models", tools: [{ name: "Ollama", url: "https://ollama.com" }, { name: "Open WebUI", url: "https://openwebui.com" }] },
+      { label: "Fine-tuning", tools: [{ name: "Unsloth", url: "https://unsloth.ai" }] },
+      { label: "Quantization", tools: [{ name: "AutoGPTQ", url: "https://github.com/AutoGPTQ/AutoGPTQ" }, { name: "bitsandbytes", url: "https://github.com/bitsandbytes-foundation/bitsandbytes" }, { name: "llama.cpp", url: "https://github.com/ggml-org/llama.cpp" }, { name: "TensorRT-LLM", url: "https://github.com/NVIDIA/TensorRT-LLM" }] },
+      { label: "Model hub", tools: [{ name: "Hugging Face", url: "https://huggingface.co" }] },
+      { label: "Serving", tools: [{ name: "vLLM", url: "https://docs.vllm.ai" }, { name: "Ray Serve", url: "https://docs.ray.io/en/latest/serve/" }] },
+      { label: "Evaluation", tools: [{ name: "Ragas", url: "https://www.ragas.io" }, { name: "TruLens", url: "https://www.trulens.org" }] },
+      { label: "GPU compute", tools: [{ name: "RunPod", url: "https://www.runpod.io" }] }
+    ]
+  },
+  {
+    title: "Backend and data",
+    rows: [
+      { label: "API framework", tools: [{ name: "FastAPI", url: "https://fastapi.tiangolo.com" }] },
+      { label: "Databases", tools: [{ name: "Supabase", url: "https://supabase.com" }, { name: "PostgreSQL", url: "https://www.postgresql.org" }, { name: "Redis", url: "https://redis.io" }, { name: "MongoDB", url: "https://www.mongodb.com" }, { name: "SQLite", url: "https://www.sqlite.org" }] },
+      { label: "Vector search", tools: [{ name: "Pinecone", url: "https://www.pinecone.io" }, { name: "Qdrant", url: "https://qdrant.tech" }, { name: "Chroma", url: "https://www.trychroma.com" }, { name: "pgvector", url: "https://github.com/pgvector/pgvector" }] },
+      { label: "Data engineering", tools: [{ name: "Apache Airflow", url: "https://airflow.apache.org" }, { name: "dbt", url: "https://www.getdbt.com" }, { name: "pandas", url: "https://pandas.pydata.org" }, { name: "Polars", url: "https://pola.rs" }, { name: "DuckDB", url: "https://duckdb.org" }] },
+      { label: "API testing", tools: [{ name: "Postman", url: "https://www.postman.com" }, { name: "Insomnia", url: "https://insomnia.rest" }, { name: "cURL", url: "https://curl.se" }] }
+    ]
+  },
+  {
+    title: "Languages and quality",
+    rows: [
+      { label: "Languages", tools: [{ name: "Python", url: "https://www.python.org" }, { name: "TypeScript", url: "https://www.typescriptlang.org" }, { name: "SQL" }, { name: "Bash", url: "https://www.gnu.org/software/bash/" }] },
+      { label: "Packaging", tools: [{ name: "uv", url: "https://docs.astral.sh/uv/" }] },
+      { label: "Linting and typing", tools: [{ name: "ruff", url: "https://docs.astral.sh/ruff/" }, { name: "mypy", url: "https://mypy-lang.org" }, { name: "Black", url: "https://black.readthedocs.io" }] },
+      { label: "Testing", tools: [{ name: "pytest", url: "https://pytest.org" }] }
+    ]
+  },
+  {
+    title: "Prototyping and design",
+    rows: [
+      { label: "Notebooks", tools: [{ name: "Jupyter", url: "https://jupyter.org" }] },
+      { label: "Quick UIs", tools: [{ name: "Streamlit", url: "https://streamlit.io" }] },
+      { label: "Frontend", tools: [{ name: "Tailwind CSS", url: "https://tailwindcss.com" }, { name: "shadcn/ui", url: "https://ui.shadcn.com" }] },
+      { label: "Design", tools: [{ name: "Figma", url: "https://www.figma.com" }] },
+      { label: "Animation", tools: [{ name: "Manim" }] },
+      { label: "Notes and docs", tools: [{ name: "Obsidian", url: "https://obsidian.md" }, { name: "Notion", url: "https://www.notion.com" }] }
+    ]
+  },
+  {
+    title: "Infrastructure and deployment",
+    rows: [
+      { label: "Containers", tools: [{ name: "OrbStack", url: "https://orbstack.dev" }, { name: "Docker", url: "https://www.docker.com" }, { name: "Docker Compose", url: "https://docs.docker.com/compose/" }, { name: "Podman", url: "https://podman.io" }] },
+      { label: "Observability", tools: [{ name: "Prometheus", url: "https://prometheus.io" }, { name: "Grafana", url: "https://grafana.com" }] },
+      { label: "Hosting", tools: [{ name: "Vercel", url: "https://vercel.com" }] },
+      { label: "Version control", tools: [{ name: "Git", url: "https://git-scm.com" }] }
     ]
   }
 ];

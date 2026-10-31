@@ -13,7 +13,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400;1,6..72,500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-optional="articles">
   <a class="skip" href="#articles-main">Skip to content</a>
 
   <header class="site-head wrap">
@@ -29,7 +29,7 @@
       <a href="about.html">about</a>
       <a href="setup.html">setup</a>
       <a href="ideas.html" data-optional="ideas" hidden>ideas</a>
-      <a href="articles.html" class="active" aria-current="page">articles</a>
+      <a href="articles.html" data-optional="articles" hidden class="active" aria-current="page">articles</a>
       <a href="photos.html" data-optional="photos" hidden>photos</a>
       <a data-site="resume" href="" hidden>résumé</a>
       <button class="theme" type="button" aria-label="Switch to light theme">
