@@ -24,7 +24,9 @@
   function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function pslug(p) { return p.slug || slug(p.title); }
   function storyUrl(p) { return "project.html?p=" + encodeURIComponent(pslug(p)); }
-  function rich(s) { return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>"); }
+  function rich(s) {
+    return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
+  }
   function ph(label) { return DRAFT ? '<span class="ph">' + esc(label) + "</span>" : ""; }
 
   /* ---------- Shared: theme, site details, favicon, contact, footer ---------- */
@@ -115,10 +117,6 @@
       if (p.stack && p.stack.length) h += '<p class="stack">' + p.stack.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</p>";
       h += '</div><div class="body"><h3><a class="title-link" href="' + storyUrl(p) + '">' + esc(p.title) + "</a></h3>";
       h += '<p class="summary">' + rich(p.summary) + "</p>";
-      if (p.details && p.details.length) {
-        h += '<ul class="details">' + p.details.map(function (x) { return "<li>" + rich(x) + "</li>"; }).join("") + "</ul>";
-      }
-      if (p.ai) h += '<p class="ai"><span>AI use</span>' + esc(p.ai) + "</p>";
       var links = (p.links || []).map(function (l) {
         if (l.url) return '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>';
         return ph(l.label + " link");
@@ -179,17 +177,38 @@
         return ph(l.label + " link");
       }).filter(Boolean).join("");
 
-      var section = function (title, body, placeholder) {
+      var toc = [];
+      var section = function (id, title, body, placeholder) {
         if (!body) {
           if (!DRAFT || !placeholder) return "";
           body = '<p class="story-ph">' + ph(placeholder) + "</p>";
         }
-        return '<section class="story-part"><h2>' + title + "</h2><div>" + body + "</div></section>";
+        toc.push({ id: id, title: title });
+        return '<section class="story-part" id="' + id + '"><h2>' + title + "</h2><div>" + body + "</div></section>";
       };
       var bullets = function (arr) {
         return arr && arr.length ? "<ul>" + arr.map(function (x) { return "<li>" + rich(x) + "</li>"; }).join("") + "</ul>" : "";
       };
-      var para = function (t) { return t ? "<p>" + rich(t) + "</p>" : ""; };
+      var para = function (t) {
+        return [].concat(t || []).map(function (x) { return "<p>" + rich(x) + "</p>"; }).join("");
+      };
+      var table = function (t) {
+        if (!t || !t.rows || !t.rows.length) return "";
+        var head = (t.head || []).map(function (c) { return '<th scope="col">' + esc(c) + "</th>"; }).join("");
+        var rows = t.rows.map(function (r) {
+          return "<tr>" + r.map(function (c, i) {
+            return i === 0 ? '<th scope="row">' + rich(c) + "</th>" : "<td>" + rich(c) + "</td>";
+          }).join("") + "</tr>";
+        }).join("");
+        return '<div class="story-table" tabindex="0" role="region" aria-label="' + esc(t.title || "Table") + '"><table>' +
+          (head ? "<thead><tr>" + head + "</tr></thead>" : "") + "<tbody>" + rows + "</tbody></table></div>";
+      };
+      var groups = function (arr) {
+        return (arr || []).map(function (g) {
+          return '<div class="story-group">' + (g.title ? "<h3>" + esc(g.title) + "</h3>" : "") +
+            para(g.text) + table(g.table) + bullets(g.points) + "</div>";
+        }).join("");
+      };
 
       var h = '<p class="back"><a href="index.html#work">All projects</a></p>';
       h += '<header class="story-head">' + statusTag(s) + "<h1>" + esc(p.title) + "</h1>";
@@ -200,13 +219,28 @@
         if (linkHtml) h += '<p class="links">' + linkHtml + "</p>";
         h += "</div>";
       }
-      h += "</header>";
-      h += section("Why I built it", para(st.why), "The problem, who has it, and why you picked it");
-      h += section("How it works", bullets(p.details), "The main pieces and how they fit together");
-      h += section("Decisions", bullets(st.decisions), "Choices you made, and the reason for each");
-      h += section("What I learned", bullets(st.learned), "What broke or surprised you, and what you do differently now");
-      h += section("AI use", para(p.ai), "Which parts you wrote and which parts AI wrote");
-      h += section("What's next", para(st.next), "The next step, and what done looks like");
+      h += "@@TOC@@</header>";
+      h += section("highlights", "Highlights", bullets(p.details));
+      h += section("why", "Why I built it", para(st.why), "The problem, who has it, and why you picked it");
+      h += section("how", "How it works", groups(st.how), "The main pieces and how they fit together");
+      h += section("results", "Results", groups(st.results));
+      h += section("decisions", "Decisions and trade-offs", bullets(st.decisions), "Choices you made, and the reason for each");
+      h += section("limits", "Limitations", bullets(st.limits));
+      h += (st.roadmap && st.roadmap.length)
+        ? section("next", "Roadmap", bullets(st.roadmap))
+        : section("next", "What's next", para(st.next), "The next step, and what done looks like");
+      var linkRows = (p.links || []).map(function (l) {
+        var a = l.url
+          ? '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>'
+          : ph(l.label + " link");
+        return a ? "<li>" + a + (l.note ? '<span class="note">' + rich(l.note) + "</span>" : "") + "</li>" : "";
+      }).join("");
+      h += section("links", "Links", linkRows && '<ul class="story-links">' + linkRows + "</ul>");
+      h = h.replace("@@TOC@@", toc.length > 1
+        ? '<ul class="story-toc" aria-label="On this page">' + toc.map(function (t) {
+            return '<li><a href="#' + t.id + '">' + t.title + "</a></li>";
+          }).join("") + "</ul>"
+        : "");
 
       var prev = PROJECTS[(idx - 1 + PROJECTS.length) % PROJECTS.length];
       var next = PROJECTS[(idx + 1) % PROJECTS.length];
@@ -221,8 +255,11 @@
 
   var headlineEl = $(".about-headline");
   if (headlineEl) {
-    if (SITE.headline) headlineEl.textContent = SITE.headline;
-    else if (DRAFT) headlineEl.innerHTML = ph("Headline: one line on what you do");
+    if (SITE.headline) {
+      var hp = SITE.headline.split("|");
+      headlineEl.innerHTML = esc(hp[0].trim()) +
+        (hp.length > 1 ? '<span class="about-sub">' + esc(hp.slice(1).join("|").trim()) + "</span>" : "");
+    } else if (DRAFT) headlineEl.innerHTML = ph("Headline: one line on what you do");
   }
 
   var introEl = $(".about-intro");
@@ -243,6 +280,40 @@
       portrait.parentNode.hidden = true;
       $(".about-hero").classList.add("no-photo");
     }
+  }
+
+  var ABOUT = window.ABOUT || {};
+  var fillSection = function (id, html, label) {
+    var sec = document.getElementById(id);
+    if (!sec) return null;
+    if (html) return html;
+    if (!DRAFT) { sec.hidden = true; return null; }
+    return '<p class="story-ph">' + ph(label) + "</p>";
+  };
+
+  var bgEl = $(".about-bg");
+  if (bgEl) {
+    var bg = fillSection("background", (ABOUT.background || []).map(function (t) { return "<p>" + rich(t) + "</p>"; }).join(""), "Your story: where you've worked and where you're headed");
+    if (bg) bgEl.innerHTML = bg;
+  }
+
+  var philEl = $(".philosophy");
+  if (philEl) {
+    var phil = fillSection("philosophy", (ABOUT.philosophy || []).map(function (x) {
+      return '<div class="phil-item"><h3>' + esc(x.title) + "</h3><p>" + rich(x.text) + "</p></div>";
+    }).join(""), "A few principles you work by");
+    if (phil) philEl.innerHTML = phil;
+  }
+
+  var factsEl = $(".facts");
+  if (factsEl) {
+    var contactRow = factsEl.querySelector(".facts-contact");
+    (ABOUT.work || []).forEach(function (r) {
+      if (!r.text) return;
+      var row = document.createElement("div");
+      row.innerHTML = "<dt>" + esc(r.label) + "</dt><dd>" + rich(r.text) + "</dd>";
+      factsEl.insertBefore(row, contactRow);
+    });
   }
 
   var eduEl = $(".edu");

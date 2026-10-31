@@ -123,6 +123,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   letter-spacing: -0.055em;
   margin: 0 0 1.25rem;
   max-width: 14ch;
+  text-wrap: balance;
 }
 .intro { margin: 0; max-width: 52ch; color: var(--fg-muted); font-size: 1.0625rem; line-height: 1.75; }
 
@@ -219,8 +220,6 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 .summary { margin: 0; max-width: 62ch; color: var(--fg-soft); }
 .details { margin: 0.9rem 0 0; padding-left: 1.05rem; max-width: 62ch; color: var(--fg-muted); font-size: 0.92rem; line-height: 1.65; }
 .details li + li { margin-top: 0.35rem; }
-.ai { margin: 0.9rem 0 0; max-width: 62ch; font-size: 0.92rem; color: var(--fg-soft); }
-.ai span { font: 0.7rem var(--mono); color: var(--fg-muted); margin-right: 0.6rem; }
 .links { margin: 1rem 0 0; display: flex; flex-wrap: wrap; gap: 0.6rem 1.4rem; font-size: 0.875rem; }
 .out span { color: var(--fg-muted); }
 
@@ -249,8 +248,13 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   letter-spacing: -0.03em;
   margin: 0 0 1.5rem;
   max-width: 18ch;
+  text-wrap: balance;
 }
 .about-hero .intro { max-width: 58ch; }
+.about-sub { display: block; margin-top: 0.9rem; font: 400 1.1rem/1.5 var(--sans); letter-spacing: 0; color: var(--fg-muted); max-width: 40ch; }
+.phil-item + .phil-item { margin-top: 1.4rem; }
+.phil-item h3 { font: 500 0.95rem/1.4 var(--sans); letter-spacing: -0.01em; margin: 0 0 0.3rem; }
+.phil-item p { margin: 0; color: var(--fg-muted); max-width: 62ch; line-height: 1.75; }
 .portrait-wrap { margin: 0; }
 .portrait-wrap[hidden] { display: none; }
 .portrait {
@@ -363,6 +367,26 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 .story-part ul { margin: 0; padding-left: 1.05rem; max-width: 62ch; color: var(--fg-soft); }
 .story-part li + li { margin-top: 0.55rem; }
 .story-ph { color: var(--fg-muted); }
+.story-part .story-links { list-style: none; padding: 0; max-width: none; }
+.story-links li { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.2rem 1.25rem; margin: 0; padding: 0.65rem 0; border-bottom: 1px solid var(--line); }
+.story-links li:first-child { padding-top: 0; }
+.story-links li:last-child { border-bottom: 0; padding-bottom: 0; }
+.story-links .note { color: var(--fg-muted); font-size: 0.875rem; }
+.story-part strong { font-weight: 500; color: var(--fg); }
+.story-part p + p { margin-top: 0.8rem; }
+.story-toc { list-style: none; margin: 1.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
+.story-toc a { font: 0.78rem var(--mono); color: var(--fg-muted); }
+.story-toc a:hover { color: var(--fg); }
+.story-part[id] { scroll-margin-top: 1rem; }
+.story-group + .story-group { margin-top: 2rem; }
+.story-group h3 { font: 500 0.95rem/1.4 var(--sans); letter-spacing: -0.01em; color: var(--fg); margin: 0 0 0.6rem; }
+.story-group > p { margin-bottom: 0.9rem; }
+.story-table { overflow-x: auto; margin: 0 0 1rem; }
+.story-table table { border-collapse: collapse; width: 100%; font-size: 0.85rem; }
+.story-table th, .story-table td { text-align: left; vertical-align: top; padding: 0.65rem 1.25rem 0.65rem 0; border-bottom: 1px solid var(--line); }
+.story-table thead th { font: 400 0.7rem var(--mono); color: var(--fg-muted); white-space: nowrap; border-bottom-color: var(--line-strong); }
+.story-table tbody th { font-weight: 500; color: var(--fg); }
+.story-table td { color: var(--fg-soft); font-variant-numeric: tabular-nums; }
 .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
 .pager a {
   display: flex;
@@ -480,6 +504,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   .meta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; padding-top: 0; }
 }
 @media (max-width: 560px) {
+  .story-table tbody th { min-width: 8.5rem; }
   .site-head { flex-wrap: wrap; }
   .site-head nav { gap: 0.1rem 1rem; width: 100%; justify-content: flex-start; }
   .site-head nav .theme { margin-left: auto; }
