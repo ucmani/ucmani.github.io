@@ -24,6 +24,8 @@
   function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, ""); }
   function pslug(p) { return p.slug || slug(p.title); }
   function storyUrl(p) { return "project.html?p=" + encodeURIComponent(pslug(p)); }
+  function hasPage(p) { return p.page !== false; }
+  function cardUrl(p) { return hasPage(p) ? storyUrl(p) : "index.html#p-" + pslug(p); }
   function rich(s) {
     return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>").replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   }
@@ -99,7 +101,7 @@
   if (featuredEl) {
     featuredEl.innerHTML = PROJECTS.filter(function (p) { return p.featured; }).slice(0, 4).map(function (p) {
       var s = byKey[p.status] || STATUSES[4];
-      return '<li><a href="' + storyUrl(p) + '"><span class="f-title">' + esc(p.title) + "</span>" +
+      return '<li><a href="' + cardUrl(p) + '"><span class="f-title">' + esc(p.title) + "</span>" +
         '<span class="f-arrow" aria-hidden="true">↗</span><span class="f-desc">' + esc(p.short || "") + "</span>" +
         statusTag(s) + "</a></li>";
     }).join("");
@@ -115,9 +117,10 @@
       var h = '<article class="project" id="p-' + pslug(p) + '" data-status="' + s.key + '">';
       h += '<div class="meta">' + statusTag(s);
       if (p.stack && p.stack.length) h += '<p class="stack">' + p.stack.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</p>";
-      h += '</div><div class="body"><h3><a class="title-link" href="' + storyUrl(p) + '">' + esc(p.title) + "</a></h3>";
-      h += '<p class="summary">' + rich(p.summary) + "</p>";
-      h += '<p class="links"><a class="more" href="' + storyUrl(p) + '" aria-label="Read more about ' + esc(p.title) + '">Read more</a></p>';
+      h += '</div><div class="body"><h3>' +
+        (hasPage(p) ? '<a class="title-link" href="' + storyUrl(p) + '">' + esc(p.title) + "</a>" : esc(p.title)) + "</h3>";
+      if (p.summary) h += '<p class="summary">' + rich(p.summary) + "</p>";
+      if (hasPage(p)) h += '<p class="links"><a class="more" href="' + storyUrl(p) + '" aria-label="Read more about ' + esc(p.title) + '">Read more</a></p>';
       return h + "</div></article>";
     }).join("");
 
@@ -150,9 +153,10 @@
 
   var storyEl = $(".story");
   if (storyEl) {
+    var pages = PROJECTS.filter(hasPage);
     var want = new URLSearchParams(location.search).get("p") || window.PREVIEW_SLUG;
     var idx = -1;
-    PROJECTS.forEach(function (p, i) { if (pslug(p) === want) idx = i; });
+    pages.forEach(function (p, i) { if (pslug(p) === want) idx = i; });
 
     if (idx < 0) {
       document.title = (SITE.name || "Mani") + " | Project not found";
@@ -160,27 +164,17 @@
         '<p class="intro">There\'s no project at this address. It may have been renamed.</p>' +
         '<p class="links"><a href="index.html#work">See all projects</a></p></section>';
     } else {
-      var p = PROJECTS[idx];
+      var p = pages[idx];
       var s = byKey[p.status] || STATUSES[4];
-      var st = p.story || {};
       document.title = (SITE.name || "Mani") + " | " + p.title;
       var meta = document.querySelector('meta[name="description"]');
-      if (meta) meta.setAttribute("content", p.summary);
+      if (meta && p.summary) meta.setAttribute("content", p.summary);
 
-      var linkHtml = (p.links || []).map(function (l) {
-        if (l.url) return '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>';
-        return ph(l.label + " link");
-      }).filter(Boolean).join("");
-
-      var toc = [];
-      var section = function (id, title, body, placeholder) {
-        if (!body) {
-          if (!DRAFT || !placeholder) return "";
-          body = '<p class="story-ph">' + ph(placeholder) + "</p>";
-        }
-        toc.push({ id: id, title: title });
-        return '<section class="story-part" id="' + id + '"><h2>' + title + "</h2><div>" + body + "</div></section>";
+      var linkItem = function (l) {
+        return l.url ? '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>' : ph(l.label + " link");
       };
+      var linkHtml = (p.links || []).map(linkItem).filter(Boolean).join("");
+
       var bullets = function (arr) {
         return arr && arr.length ? "<ul>" + arr.map(function (x) { return "<li>" + rich(x) + "</li>"; }).join("") + "</ul>" : "";
       };
@@ -204,10 +198,33 @@
             para(g.text) + table(g.table) + bullets(g.points) + "</div>";
         }).join("");
       };
+      var linkRows = function (arr) {
+        var rows = (arr || []).map(function (l) {
+          var a = linkItem(l);
+          return a ? "<li>" + a + (l.note ? '<span class="note">' + rich(l.note) + "</span>" : "") + "</li>" : "";
+        }).join("");
+        return rows ? '<ul class="story-links">' + rows + "</ul>" : "";
+      };
+
+      // Each project lists its own sections; any mix of text, points, table, groups and links
+      var toc = [], used = {};
+      var sectionHtml = function (sec) {
+        var body = para(sec.text) + table(sec.table) + bullets(sec.points) + groups(sec.groups) +
+          linkRows(sec.links === true ? p.links : sec.links);
+        if (!body) {
+          if (!DRAFT || !sec.placeholder) return "";
+          body = '<p class="story-ph">' + ph(sec.placeholder) + "</p>";
+        }
+        var id = "s-" + (slug(sec.title || "") || "section");
+        used[id] = (used[id] || 0) + 1;
+        if (used[id] > 1) id += "-" + used[id];
+        toc.push({ id: id, title: sec.title || "" });
+        return '<section class="story-part" id="' + id + '"><h2>' + esc(sec.title || "") + "</h2><div>" + body + "</div></section>";
+      };
 
       var h = '<p class="back"><a href="index.html#work">All projects</a></p>';
       h += '<header class="story-head">' + statusTag(s) + "<h1>" + esc(p.title) + "</h1>";
-      h += '<p class="intro">' + rich(p.summary) + "</p>";
+      if (p.summary) h += '<p class="intro">' + rich(p.summary) + "</p>";
       if ((p.stack && p.stack.length) || linkHtml) {
         h += '<div class="story-meta">';
         if (p.stack && p.stack.length) h += '<p class="stack">' + p.stack.map(function (t) { return "<span>" + esc(t) + "</span>"; }).join("") + "</p>";
@@ -215,33 +232,20 @@
         h += "</div>";
       }
       h += "@@TOC@@</header>";
-      h += section("highlights", "Highlights", bullets(p.details));
-      h += section("why", "Why I built it", para(st.why), "The problem, who has it, and why you picked it");
-      h += section("how", "How it works", groups(st.how), "The main pieces and how they fit together");
-      h += section("results", "Results", groups(st.results));
-      h += section("decisions", "Decisions and trade-offs", bullets(st.decisions), "Choices you made, and the reason for each");
-      h += section("limits", "Limitations", bullets(st.limits));
-      h += (st.roadmap && st.roadmap.length)
-        ? section("next", "Roadmap", bullets(st.roadmap))
-        : section("next", "What's next", para(st.next), "The next step, and what done looks like");
-      var linkRows = (p.links || []).map(function (l) {
-        var a = l.url
-          ? '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>'
-          : ph(l.label + " link");
-        return a ? "<li>" + a + (l.note ? '<span class="note">' + rich(l.note) + "</span>" : "") + "</li>" : "";
-      }).join("");
-      h += section("links", "Links", linkRows && '<ul class="story-links">' + linkRows + "</ul>");
+      h += (p.sections || []).map(sectionHtml).join("");
       h = h.replace("@@TOC@@", toc.length > 1
         ? '<ul class="story-toc" aria-label="On this page">' + toc.map(function (t) {
-            return '<li><a href="#' + t.id + '">' + t.title + "</a></li>";
+            return '<li><a href="#' + t.id + '">' + esc(t.title) + "</a></li>";
           }).join("") + "</ul>"
         : "");
 
-      var prev = PROJECTS[(idx - 1 + PROJECTS.length) % PROJECTS.length];
-      var next = PROJECTS[(idx + 1) % PROJECTS.length];
-      h += '<nav class="pager" aria-label="More projects">' +
-        '<a href="' + storyUrl(prev) + '"><small>Previous</small>' + esc(prev.title) + "</a>" +
-        '<a href="' + storyUrl(next) + '"><small>Next</small>' + esc(next.title) + "</a></nav>";
+      if (pages.length > 1) {
+        var prev = pages[(idx - 1 + pages.length) % pages.length];
+        var next = pages[(idx + 1) % pages.length];
+        h += '<nav class="pager" aria-label="More projects">' +
+          '<a href="' + storyUrl(prev) + '"><small>Previous</small>' + esc(prev.title) + "</a>" +
+          '<a href="' + storyUrl(next) + '"><small>Next</small>' + esc(next.title) + "</a></nav>";
+      }
       storyEl.innerHTML = h;
     }
   }
