@@ -380,6 +380,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 .story-links .note { color: var(--fg-muted); font-size: 0.875rem; }
 .story-part strong { font-weight: 500; color: var(--fg); }
 .story-part p + p { margin-top: 0.8rem; }
+.story-part p + ul, .story-part p + .story-table { margin-top: 0.8rem; }
 .story-toc { list-style: none; margin: 1.75rem 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; }
 .story-toc a { font: 0.78rem var(--mono); color: var(--fg-muted); }
 .story-toc a:hover { color: var(--fg); }
