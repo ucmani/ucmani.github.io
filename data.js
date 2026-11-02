@@ -702,6 +702,73 @@ window.PROJECTS = [
         ]
       }
     ]
+  },
+  {
+    title: "Intent Router",
+    slug: "intent-router",
+    status: "planned",
+    short: "A support-ticket intent classifier, from training to a quantized, CI-gated service",
+    summary: "A support-ticket intent classifier, taken from training to a quantized, CI-gated inference service.",
+    stack: ["PyTorch", "Hugging Face", "MLflow", "ONNX Runtime", "FastAPI", "Docker", "GitHub Actions", "Locust"],
+    sections: [
+      {
+        title: "What it will be",
+        text: "A planned weekend build. I will fine-tune DistilBERT on the Banking77 dataset (77 intents) and compare it against a TF-IDF and logistic regression baseline. The best model will be tracked and registered in MLflow, exported to ONNX, quantized to int8, and served through a Dockerized FastAPI service. A GitHub Actions workflow will block any change that drops accuracy below the baseline."
+      },
+      {
+        title: "Goals",
+        points: [
+          "Beat the baseline on macro-F1",
+          "Measure p50 and p99 latency and throughput before and after int8 quantization, and report the accuracy cost",
+          "Load test with Locust and publish the results"
+        ]
+      }
+    ]
+  },
+  {
+    title: "BenchBrief Data Layer",
+    slug: "benchbrief-data-layer",
+    status: "planned",
+    short: "A daily idempotent ingestion pipeline for a legal RAG system",
+    summary: "An Airflow pipeline to keep a legal RAG system's data fresh, deduplicated, and versioned.",
+    stack: ["Airflow", "Spark (local mode)", "dbt", "Postgres (Supabase)", "Parquet", "Docker"],
+    sections: [
+      {
+        title: "What it will be",
+        text: "A planned extension of BenchBrief. A daily Airflow DAG will pull changed dockets from CourtListener using query-based change data capture. Spark will deduplicate records and detect inserts and updates against the previous day's table. dbt models on Supabase Postgres will track docket history as slowly changing dimensions (SCD Type 2), with tests on every model. The pipeline is designed to be idempotent, so rerunning or backfilling any date gives identical results."
+      },
+      {
+        title: "Goals",
+        points: [
+          "Prove idempotency by replaying the same day twice and getting zero duplicate rows",
+          "Backfill several days and show SCD2 history for changed dockets",
+          "Add a quality gate that fails the run on empty loads or abnormal row counts"
+        ]
+      }
+    ]
+  },
+  {
+    title: "Call Audit Escalation Agent",
+    slug: "call-audit-escalation-agent",
+    status: "planned",
+    short: "A LangGraph agent that alerts managers when a call falls below benchmark",
+    summary: "An agent that watches call-audit results and alerts managers when a call falls below benchmark, with a human in the loop.",
+    stack: ["LangGraph", "LangChain", "FastAPI", "LLM"],
+    sections: [
+      {
+        title: "What it will be",
+        text: "A planned LangGraph agent built on the Call Auditor concept. When a call's audit score fails a benchmark, the agent classifies the failure (for example compliance miss, tone, or missed script step), pulls the relevant evidence from the audit, and drafts a report for the manager that explains what to focus on. Low-confidence or high-severity cases pause for human review before anything is sent. A checkpointer persists state, so a run can be resumed after review."
+      },
+      {
+        title: "Goals",
+        points: [
+          "Route failures by type and severity through conditional graph logic",
+          "Add a human approval step before reports go out",
+          "Keep full run state for auditability and resumption",
+          "Evaluate the report quality against a small labeled set of failed audits"
+        ]
+      }
+    ]
   }
 ];
 
