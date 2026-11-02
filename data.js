@@ -429,6 +429,47 @@ window.PROJECTS = [
     ]
   },
   {
+    title: "PyAttrScore",
+    slug: "pyattrscore",
+    status: "built",
+    short: "A multi-touch and football-inspired attribution engine",
+    summary: "A modular Python package for multi-touch marketing attribution: standard industry models plus a custom, football-inspired framework that scores channels on their build-up value, not just the final click.",
+    stack: ["Python", "Marketing analytics"],
+    links: [
+      { label: "Code", url: "https://github.com/ucmani/pyattrscore" },
+      { label: "Article", url: "https://medium.com/@manikhantatejag/how-a-football-inspired-attribution-model-reimagines-marketing-analytics-a0bd8132c7f8" }
+    ],
+    sections: [
+      {
+        title: "Why I built it",
+        text: "Traditional multi-touch marketing attribution models often treat customer touchpoints as isolated events, or rely on rigid heuristics (first-touch, last-touch, linear) that fail to capture the true dynamics of multi-step conversion journeys."
+      },
+      {
+        title: "How it works",
+        groups: [
+          {
+            title: "The package",
+            points: [
+              "A comprehensive, modular Python package that implements both standard industry attribution models and a custom-built framework.",
+              "It gives developers and analysts a toolkit to ingest raw event-stream data, process sequential touchpoint chains, and evaluate conversion credit from multiple analytical lenses."
+            ]
+          },
+          {
+            title: "The football-inspired framework",
+            text: "A cross-domain attribution model I ideated and built, borrowing spatial and sequence analytics from football (soccer).",
+            points: [
+              "Conversions are treated as “goals” and touchpoint sequences as “passes”.",
+              "The engine calculates a **Channel Impact Score (CIS)** using functional roles mirrored from football positions: Scorers, Assisters, Key Passers and Generators.",
+              "It computes derived metrics, including Expected Goals (xG), Expected Assists (xA), and channel archetype classifications (Generators, Engagers, Nurturers, Closers).",
+              "The aim is to quantify build-up value rather than just final clicks."
+            ]
+          }
+        ]
+      },
+      { title: "Links", links: true }
+    ]
+  },
+  {
     title: "CallAudit",
     slug: "callaudit",
     status: "building",
@@ -534,72 +575,72 @@ window.PROJECTS = [
   {
     title: "devnest",
     slug: "devnest",
-    status: "building",
+    status: "planned",
     short: "Local-first project health, onboarding and error memory for small teams",
-    summary: "A local-first developer productivity CLI that gives small teams (1–10 engineers) project clarity, health diagnostics and error memory, with no servers or cloud dependencies.",
+    summary: "A local-first developer productivity CLI planned for small teams (1–10 engineers): project clarity, health diagnostics and error memory, with no servers or cloud dependencies.",
     stack: ["Python", "Typer", "Rich", "SQLite", "Ollama"],
     sections: [
       {
         title: "Highlights",
         points: [
-          "`doctor` and `dashboard` run read-only checks on runtimes, Docker, port conflicts, environment variables and lockfile drift, and cache the results per project.",
-          "`onboard` takes a fresh clone to a runnable state in six steps, including `.env` bootstrapping and a Docker stack.",
-          "When a command fails, the built-in error memory surfaces how you fixed it before. errnest started as one of its modules.",
-          "Everything lives in config files, one SQLite file and local Ollama models."
+          "`doctor` and `dashboard` will run read-only checks on runtimes, Docker, port conflicts, environment variables and lockfile drift, and cache the results per project.",
+          "`onboard` will take a fresh clone to a runnable state in six steps, including `.env` bootstrapping and a Docker stack.",
+          "When a command fails, a built-in error memory will surface how you fixed it before. errnest started as one of its modules.",
+          "Everything will live in config files, one SQLite file and local Ollama models."
         ]
       },
       {
-        title: "Why I built it",
+        title: "Why I'm building it",
         text: [
           "Backstage-style developer portals give you project catalogs, onboarding paths and health signals, but they need a hosted service and a dedicated infrastructure team to run. For a solo developer or a small team, that is overkill.",
-          "devnest answers the same needs with no required infrastructure. Everything runs locally from a config file (`~/.devnest/config.toml`), a single SQLite file, per-project caches (`.devnest/cache.json`), and local AI through Ollama instead of cloud APIs. It is extensible by design: custom checks and project plugins take a few lines and don't touch core code."
+          "devnest is meant to answer the same needs with no required infrastructure. Everything is planned to run locally from a config file (`~/.devnest/config.toml`), a single SQLite file, per-project caches (`.devnest/cache.json`), and local AI through Ollama instead of cloud APIs. It is designed to be extensible: custom checks and project plugins should take a few lines and not touch core code."
         ]
       },
       {
-        title: "How it works",
+        title: "How it will work",
         groups: [
           {
-            title: "Stack",
+            title: "Planned stack",
             points: [
               "**Language and core:** Python 3.9+, Typer (CLI), Rich (terminal formatting)",
               "**Storage:** SQLite in WAL mode, standard library only",
               "**AI:** Ollama for local inference (error embeddings, codebase orientation, code-scan explanations)",
-              "**Packaging:** hatchling, published to PyPI as `devnest-cli` and installable with pipx or `uv tool`",
+              "**Packaging:** hatchling, with PyPI distribution planned as `devnest-cli` (installable with pipx or `uv tool`)",
               "**Extensibility:** subcommands mounted dynamically from `.devnest/plugin.py`, and community check registries via JSON manifests"
             ]
           },
           {
             title: "Discovery, configuration and health",
             points: [
-              "**`list`:** walks the configured root directories, finds project boundaries (`.git`, `pyproject.toml`, `package.json`) and caches them to avoid repeated recursion.",
-              "**`doctor` and `dashboard`:** read-only diagnostics across runtimes, Docker daemon reachability, port conflicts, environment variables and lockfile drift. Health snapshots are cached per project, and no test suites are run.",
-              "**`onboard`:** takes a fresh clone to a runnable state in six isolated steps: runtime check, bootstrapping `.env` from `.env.example`, Docker stack bring-up, package installation and a smoke test."
+              "**`list`:** will walk the configured root directories, find project boundaries (`.git`, `pyproject.toml`, `package.json`) and cache them to avoid repeated recursion.",
+              "**`doctor` and `dashboard`:** will run read-only diagnostics across runtimes, Docker daemon reachability, port conflicts, environment variables and lockfile drift. Health snapshots will be cached per project, and no test suites will be run.",
+              "**`onboard`:** will take a fresh clone to a runnable state in six isolated steps: runtime check, bootstrapping `.env` from `.env.example`, Docker stack bring-up, package installation and a smoke test."
             ]
           },
           {
             title: "Local error memory and intelligence",
             points: [
-              "**`errors`:** local error capture that redacts secrets and embeds with Ollama. When a command fails inside `doctor`, `onboard` or `stack`, devnest surfaces past fixes: “you've hit this before, here's what worked.”",
-              "**`context`:** combines READMEs, git-history analytics (top contributors, most-changed files) and design notes through a local LLM to generate a structured `docs/ORIENTATION.md`, cached by content hash.",
-              "**`prompt`:** manages LLM prompts as versioned files (`prompts/<name>/vN.md` with YAML frontmatter), with viewing, diffing and pipeable execution."
+              "**`errors`:** will capture errors locally, redact secrets and embed with Ollama. When a command fails inside `doctor`, `onboard` or `stack`, devnest will surface past fixes: “you've hit this before, here's what worked.”",
+              "**`context`:** will combine READMEs, git-history analytics (top contributors, most-changed files) and design notes through a local LLM to generate a structured `docs/ORIENTATION.md`, cached by content hash.",
+              "**`prompt`:** will manage LLM prompts as versioned files (`prompts/<name>/vN.md` with YAML frontmatter), with viewing, diffing and pipeable execution."
             ]
           },
           {
             title: "Workflow automation and safeguards",
             points: [
-              "**`port`:** resolves the processes bound to a port across operating systems, cross-references running Docker containers with the project registry, and asks for explicit confirmation before killing anything.",
-              "**`refactor`:** strictly additive, based on structural gap analysis. It generates `.env.example` templates or scaffolds tests, each with individual confirmation, and never rewrites code automatically.",
-              "**`publish`:** coordinates `uv build` and `uv publish` through a release pipeline (tests, version bump, build validation, TestPyPI staging), with credentials handled through uv config."
+              "**`port`:** will resolve the processes bound to a port across operating systems, cross-reference running Docker containers with the project registry, and ask for explicit confirmation before killing anything.",
+              "**`refactor`:** will be strictly additive, based on structural gap analysis. It will generate `.env.example` templates or scaffold tests, each with individual confirmation, and never rewrite code automatically.",
+              "**`publish`:** will coordinate `uv build` and `uv publish` through a release pipeline (tests, version bump, build validation, TestPyPI staging), with credentials handled through uv config."
             ]
           }
         ]
       },
       {
-        title: "Decisions and trade-offs",
+        title: "Design decisions",
         points: [
           "**Zero infrastructure:** no cloud databases, central servers or Kubernetes. All state stays in local config and SQLite.",
-          "**Graceful degradation:** plugins and diagnostic checks are sandboxed, so a broken plugin logs a warning and is skipped instead of crashing the CLI.",
-          "**Non-blocking AI:** heavy LLM work (error explanations, context generation) runs in local background workers or optional dependencies (`devnest[errors]`), so the terminal never freezes."
+          "**Graceful degradation:** plugins and diagnostic checks will be sandboxed, so a broken plugin logs a warning and is skipped instead of crashing the CLI.",
+          "**Non-blocking AI:** heavy LLM work (error explanations, context generation) will run in local background workers or optional dependencies (`devnest[errors]`), so the terminal never freezes."
         ]
       },
       {
@@ -608,6 +649,56 @@ window.PROJECTS = [
           "**Community check registries:** extend `registry add` to remote JSON manifests, for sharing community-authored checks and templates.",
           "**Pattern generation:** tools that suggest and generate Strategy, Factory, Observer, Repository and State patterns, with pytest stubs.",
           "**Diff-aware scanning:** persistent security-smell tracking and vulnerability detection using structural code hashing."
+        ]
+      }
+    ]
+  },
+  {
+    title: "Keepline",
+    slug: "keepline",
+    status: "planned",
+    short: "Keep what your agent's session actually needs. Compact the rest.",
+    summary: "Keeps what an AI agent's long session still needs and compacts the rest, so every turn is cheaper and the context stays clean.",
+    sections: [
+      {
+        title: "Why I'm building it",
+        text: [
+          "AI agents re-read their entire history on every turn. In long sessions most of that history is bulk, such as tool output, logs and abandoned attempts, so the cost climbs with every turn and answers get worse as the context fills with noise.",
+          "The usual fixes are blunt. Truncating drops things the agent still needed. Summarizing everything blurs exact details like names, numbers and error messages, and rewriting history can break prompt caching, so the bill sometimes goes up instead of down.",
+          "What is missing is a reliable way to tell what a session still needs, and to compact the rest without losing it."
+        ]
+      },
+      {
+        title: "What it aims to do",
+        points: [
+          "**Compacts long sessions.** Keeps what the agent still needs and condenses the rest, so every turn is cheaper and the context stays clean.",
+          "**Loses nothing.** Original turns stay stored and can be recalled when the agent needs them.",
+          "**Shows the evidence.** Results are measured on cost and answer quality together, not on tokens saved alone."
+        ]
+      }
+    ]
+  },
+  {
+    title: "RouteWise",
+    slug: "routewise",
+    status: "planned",
+    short: "Find out how much of your LLM traffic actually needs your most expensive model.",
+    summary: "Looks at real conversation traffic to estimate how much of an LLM product's requests really need its most expensive model, and what moving the rest to a smaller one would cost in quality.",
+    sections: [
+      {
+        title: "Why I'm building it",
+        text: [
+          "Most LLM-powered products send every request to one strong, expensive model. A large share of those requests are simple enough for a smaller, cheaper model to handle just as well, but teams rarely have the evidence to act on that safely.",
+          "Generic routing tools exist, but they are typically tuned on someone else's data. Your traffic, your users, and your definition of “good enough” are different."
+        ]
+      },
+      {
+        title: "What it aims to do",
+        text: "Looking at real conversation traffic, it aims to answer three questions.",
+        points: [
+          "**How much are you overspending?** An estimate of the cost that could move to a smaller model, broken down by task type.",
+          "**What would it cost in quality?** Where a smaller model holds up, and where it doesn't.",
+          "**Can routing be automated safely?** A learned router that sends each request to the right-sized model, and keeps checking its own decisions over time."
         ]
       }
     ]
