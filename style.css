@@ -394,6 +394,21 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
 .story-table thead th { font: 400 0.7rem var(--mono); color: var(--fg-muted); white-space: nowrap; border-bottom-color: var(--line-strong); }
 .story-table tbody th { font-weight: 500; color: var(--fg); }
 .story-table td { color: var(--fg-soft); font-variant-numeric: tabular-nums; }
+.chart { margin: 1.25rem 0 0; max-width: 40rem; }
+.chart figcaption { font: 0.7rem var(--mono); color: var(--fg-muted); margin-bottom: 0.6rem; }
+.chart svg { display: block; width: 100%; height: auto; }
+.chart .grid { stroke: var(--line); stroke-width: 1; }
+.chart .tick { font: 10px var(--mono); fill: var(--fg-muted); }
+.chart .line { fill: none; stroke-width: 1.75; stroke-linejoin: round; stroke-linecap: round; }
+.chart .c-train.line, .chart .c-train.dot { stroke: var(--fg); fill: var(--fg); }
+.chart .c-train.line { fill: none; }
+.chart .c-eval.line, .chart .c-eval.dot { stroke: var(--built); fill: var(--built); }
+.chart .c-eval.line { fill: none; stroke-dasharray: 5 3; }
+.chart-legend { display: flex; gap: 1.2rem; margin: 0.5rem 0 0; font: 0.72rem var(--mono); color: var(--fg-muted); }
+.chart-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.chart-legend i { width: 14px; height: 0; border-top: 2px solid var(--fg); }
+.chart-legend i.c-eval { border-top: 2px dashed var(--built); }
+.story-part .story-table + .chart { margin-top: 0.5rem; }
 .pager { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 3rem; }
 .pager a {
   display: flex;

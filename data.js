@@ -116,6 +116,22 @@ window.EDUCATION = [
   }
 ];
 
+// Katha-31M: every number for that project lives here. The project entry below only reads from it.
+// Values marked "planned config" are to be confirmed. TODO strings render as placeholders.
+window.KATHA = {
+  params: 31.5e6,                // total parameters (millions shown on page)
+  layers: 8, hidden: 384, heads: 6, kvHeads: 2, mlp: 1024, context: 512,
+  vocab: 49152,
+  lnVocab: 10.80, startLoss: 10.83,
+  stories: 200000, tokensPerStory: 222, wordsPerStory: 175, tokensPerWord: 1.27, corpusTokens: 44e6,
+  valSplitPct: 2,
+  microBatch: 8, gradAccum: 8,
+  lr: "1e-3", warmup: 200, weightDecay: 0.1, beta2: 0.95, clip: 1.0, steps: 3000,
+  logitsMBAtBatch8: 805, oomBatch: 32, oomAllocGiB: 3,
+  checkpointGB: 0.4, bytesPerParamCheckpoint: 12,
+  lossCurveFile: "data/katha-loss.json"   // rows of { step, train_loss, eval_loss }
+};
+
 // Every project field except title and status is optional.
 // status: in-use | built | building | learning | planned
 // featured: shown at the top of the home page
@@ -129,6 +145,8 @@ window.EDUCATION = [
 //   groups: [{ title, text, table, points }], links (true = this project's links),
 //   placeholder (shown only while placeholders are on, if the section is empty)
 // **bold** and `code` work in text
+(function () {
+var K = window.KATHA;
 window.PROJECTS = [
   {
     title: "BenchBrief AI",
@@ -470,6 +488,132 @@ window.PROJECTS = [
     ]
   },
   {
+    title: "Katha-31M",
+    slug: "katha-31m",
+    status: "built",
+    short: "A ~31M-parameter Llama-style language model, pretrained from scratch on a free Colab T4",
+    summary: "A ~31M-parameter Llama-architecture language model pretrained from random initialisation on TinyStories, using the Hugging Face stack on a free Google Colab T4. A learning project covering the full pretraining workflow, not a production model.",
+    stack: ["PyTorch", "Hugging Face Transformers", "Datasets", "Trainer", "torch.profiler", "Google Colab (T4)"],
+    links: [{ label: "Hugging Face" }],
+    sections: [
+      {
+        title: "Highlights",
+        points: [
+          `Pretrained from random initialisation: ${K.layers} layers, hidden size ${K.hidden}, grouped-query attention, RoPE, RMSNorm and tied embeddings, in about ${(K.params / 1e6).toFixed(1)}M parameters.`,
+          `Trained on a ~${(K.stories / 1000).toFixed(0)},000-story subset of TinyStories (~${(K.corpusTokens / 1e6).toFixed(0)}M tokens), packed into ${K.context}-token blocks with no padding.`,
+          `${K.steps.toLocaleString("en-US")} optimizer steps at ${(K.microBatch * K.gradAccum * K.context).toLocaleString("en-US")} tokens per step, on one free T4 with fp16 mixed precision.`,
+          `A randomly initialised model should start near ln(vocab) = ${K.lnVocab.toFixed(2)}. I measured ${K.startLoss}, which confirmed the data, labels and model were wired correctly.`
+        ]
+      },
+      {
+        title: "Why I built it",
+        text: "I wanted to learn the full pretraining workflow end to end: tokenization, data packing, model configuration, the training loop, memory budgeting and profiling. It is a learning project, so the point is understanding each stage, and the model itself is secondary."
+      },
+      {
+        title: "Model and configuration",
+        table: {
+          title: "Katha-31M configuration",
+          head: ["Setting", "Value"],
+          rows: [
+            ["Architecture", "Llama-style, decoder only"],
+            ["Layers", String(K.layers)],
+            ["Hidden size", String(K.hidden)],
+            ["Attention heads", `${K.heads} query, ${K.kvHeads} key/value (grouped-query attention)`],
+            ["MLP size", String(K.mlp)],
+            ["Positions and norm", "RoPE, RMSNorm"],
+            ["Embeddings", "Input and output tied"],
+            ["Max context", `${K.context} tokens`],
+            ["Vocabulary", K.vocab.toLocaleString("en-US")],
+            ["Parameters", `~${(K.params / 1e6).toFixed(1)}M`],
+            ["Hardware", "Free Google Colab, NVIDIA T4 (16 GB)"]
+          ]
+        }
+      },
+      {
+        title: "How it works",
+        groups: [
+          {
+            title: "Tokenizer",
+            text: `I reused an existing ${K.vocab.toLocaleString("en-US")}-token tokenizer (SmolLM2) instead of training one. The catch is that the vocabulary is large relative to the model: the embedding table is about ${Math.round(K.vocab * K.hidden / K.params * 100)}% of the ${(K.params / 1e6).toFixed(1)}M parameters. That is a key lesson about tiny models.`
+          },
+          {
+            title: "Data pipeline",
+            points: [
+              `**Source:** a subset of roneneldan/TinyStories, about ${K.stories.toLocaleString("en-US")} stories (~${K.tokensPerStory} tokens and ~${K.wordsPerStory} words each, about ${K.tokensPerWord} tokens per word).`,
+              "**Packing:** an end-of-text token is appended to every story, the stories are concatenated, and the stream is cut into fixed blocks. There is no padding.",
+              `**Blocks:** ${K.context} tokens each, with ${K.valSplitPct}% of blocks held out for validation.`
+            ]
+          },
+          {
+            title: "Training run",
+            points: [
+              "**Trainer:** Hugging Face `Trainer` with AdamW.",
+              `**Batching:** micro-batch ${K.microBatch} sequences x ${K.gradAccum} gradient-accumulation steps x ${K.context} tokens = ${(K.microBatch * K.gradAccum * K.context).toLocaleString("en-US")} tokens per optimizer step.`,
+              `**Schedule:** learning rate ${K.lr} with ${K.warmup} warm-up steps and cosine decay, weight decay ${K.weightDecay}, beta2 ${K.beta2}, gradient clipping ${K.clip.toFixed(1)}.`,
+              "**Precision:** fp16 mixed precision, because the T4 has no bf16.",
+              `**Length:** ${K.steps.toLocaleString("en-US")} steps (~${Math.round(K.steps * K.microBatch * K.gradAccum * K.context / 1e6)}M tokens, about two passes over the data).`,
+              "**Resilience:** checkpoints saved to Google Drive with automatic resume."
+            ]
+          }
+        ]
+      },
+      {
+        title: "What I learned and key decisions",
+        groups: [
+          {
+            title: "Debugging story: an out-of-memory error from the logits",
+            text: [
+              `The output logits tensor is batch x sequence x vocab. At batch ${K.microBatch} it is ~${K.logitsMBAtBatch8} MB in fp32. At batch ${K.oomBatch} it needed a ${K.oomAllocGiB} GiB allocation and ran out of memory on the T4.`,
+              `The fix was micro-batch ${K.microBatch} with ${K.gradAccum} gradient-accumulation steps, which keeps the same tokens per optimizer step.`
+            ]
+          },
+          {
+            title: "Other things I verified",
+            points: [
+              `**Sanity check:** the starting loss of ${K.startLoss} against ln(vocab) = ${K.lnVocab.toFixed(2)} showed the data, labels and model were wired correctly.`,
+              `**Grouped-query attention:** \`q_proj\` is ${K.hidden}x${K.hidden}, while \`k_proj\` and \`v_proj\` are ${K.kvHeads * K.hidden / K.heads}x${K.hidden}, so the KV cache is ${K.heads / K.kvHeads}x smaller.`,
+              "**What the Trainer hides:** the forward pass, backward pass, gradient accumulation, clipping, optimizer step and LR schedule. I wrote a bare-bones loop around the same model to see each step.",
+              "**Packing:** it removes padding waste. A story can straddle two blocks.",
+              `**Checkpoint size:** roughly ${K.bytesPerParamCheckpoint} bytes per parameter (weights plus Adam state), about ${K.checkpointGB} GB each here.`
+            ]
+          }
+        ]
+      },
+      {
+        title: "Results",
+        text: "Training loss, evaluation loss and throughput come from the Trainer's logs.",
+        table: {
+          title: "Training results",
+          head: ["Measure", "Value"],
+          rows: [
+            ["Starting loss", String(K.startLoss)],
+            ["ln(vocab)", K.lnVocab.toFixed(2)],
+            ["Final train loss", "TODO: final train loss"],
+            ["Final eval loss", "TODO: final eval loss"],
+            ["Tokens per second (T4)", "TODO: tokens per second"],
+            ["Total training time", "TODO: total training time"],
+            ["Peak GPU memory", "TODO: peak GPU memory"]
+          ]
+        },
+        chart: { title: "Training and evaluation loss", src: K.lossCurveFile }
+      },
+      {
+        title: "Profiling",
+        text: "I ran torch.profiler on a few training steps to see where the GPU time goes.",
+        table: {
+          title: "Profiling findings",
+          head: ["Finding", "Value"],
+          rows: [
+            ["Top operations by GPU time", "TODO: top operations by GPU time"],
+            ["Share in matrix multiplications", "TODO: approximate share in matmuls"],
+            ["Share in elementwise operations", "TODO: approximate share in elementwise ops"],
+            ["Takeaway", "TODO: one takeaway sentence"]
+          ]
+        }
+      }
+    ]
+  },
+  {
     title: "CallAudit",
     slug: "callaudit",
     status: "building",
@@ -771,6 +915,7 @@ window.PROJECTS = [
     ]
   }
 ];
+})();
 
 // added: e.g. "Oct 2026"
 window.IDEAS = [

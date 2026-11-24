@@ -186,7 +186,8 @@
         var head = (t.head || []).map(function (c) { return '<th scope="col">' + esc(c) + "</th>"; }).join("");
         var rows = t.rows.map(function (r) {
           return "<tr>" + r.map(function (c, i) {
-            return i === 0 ? '<th scope="row">' + rich(c) + "</th>" : "<td>" + rich(c) + "</td>";
+            if (i === 0) return '<th scope="row">' + rich(c) + "</th>";
+            return "<td>" + (/^TODO\b/.test(c) ? ph(c) : rich(c)) + "</td>";
           }).join("") + "</tr>";
         }).join("");
         return '<div class="story-table" tabindex="0" role="region" aria-label="' + esc(t.title || "Table") + '"><table>' +
@@ -197,6 +198,14 @@
           return '<div class="story-group">' + (g.title ? "<h3>" + esc(g.title) + "</h3>" : "") +
             para(g.text) + table(g.table) + bullets(g.points) + "</div>";
         }).join("");
+      };
+
+      // Loss-curve chart: reads rows of { step, train_loss, eval_loss } from a JSON or CSV file
+      var chartHtml = function (c) {
+        if (!c || !c.src) return "";
+        return '<figure class="chart" data-src="' + esc(c.src) + '" data-title="' + esc(c.title || "Chart") + '">' +
+          '<figcaption>' + esc(c.title || "Chart") + "</figcaption>" +
+          '<div class="chart-body" role="img" aria-label="' + esc(c.title || "Chart") + ' (loading)">' + ph("Loading chart data") + "</div></figure>";
       };
       var linkRows = function (arr) {
         var rows = (arr || []).map(function (l) {
@@ -209,7 +218,7 @@
       // Each project lists its own sections; any mix of text, points, table, groups and links
       var toc = [], used = {};
       var sectionHtml = function (sec) {
-        var body = para(sec.text) + table(sec.table) + bullets(sec.points) + groups(sec.groups) +
+        var body = para(sec.text) + table(sec.table) + chartHtml(sec.chart) + bullets(sec.points) + groups(sec.groups) +
           linkRows(sec.links === true ? p.links : sec.links);
         if (!body) {
           if (!DRAFT || !sec.placeholder) return "";
@@ -247,7 +256,87 @@
           '<a href="' + storyUrl(next) + '"><small>Next</small>' + esc(next.title) + "</a></nav>";
       }
       storyEl.innerHTML = h;
+      storyEl.querySelectorAll(".chart").forEach(loadChart);
     }
+  }
+
+  function parseRows(text, src) {
+    var rows;
+    if (/\.csv(\?|$)/i.test(src)) {
+      var lines = text.trim().split(/\r?\n/);
+      var cols = lines.shift().split(",").map(function (x) { return x.trim(); });
+      rows = lines.map(function (l) {
+        var v = l.split(","), o = {};
+        cols.forEach(function (c, i) { o[c] = v[i] === undefined || v[i].trim() === "" ? null : Number(v[i]); });
+        return o;
+      });
+    } else {
+      var j = JSON.parse(text);
+      rows = Array.isArray(j) ? j : j.rows;
+    }
+    return (rows || []).filter(function (r) { return isFinite(r.step); });
+  }
+
+  function loadChart(fig) {
+    var body = fig.querySelector(".chart-body");
+    var title = fig.getAttribute("data-title");
+    var todo = function (msg) {
+      body.setAttribute("aria-label", title + " (no data yet)");
+      body.innerHTML = ph(msg);
+    };
+    fetch(fig.getAttribute("data-src"), { cache: "no-cache" })
+      .then(function (r) { if (!r.ok) throw new Error(r.status); return r.text(); })
+      .then(function (t) {
+        var rows = parseRows(t, fig.getAttribute("data-src"));
+        if (!rows.length) { todo("TODO: loss curve (export step, train_loss, eval_loss from the Trainer log history)"); return; }
+        drawLoss(body, rows, title);
+      })
+      .catch(function () { todo("TODO: loss curve data file could not be loaded"); });
+  }
+
+  function drawLoss(body, rows, title) {
+    var W = 640, H = 300, m = { l: 44, r: 12, t: 12, b: 36 };
+    var series = [
+      { key: "train_loss", label: "Train", cls: "c-train" },
+      { key: "eval_loss", label: "Eval", cls: "c-eval" }
+    ].map(function (s) {
+      s.pts = rows.filter(function (r) { return r[s.key] != null && isFinite(r[s.key]); })
+        .map(function (r) { return [Number(r.step), Number(r[s.key])]; })
+        .sort(function (a, b) { return a[0] - b[0]; });
+      return s;
+    }).filter(function (s) { return s.pts.length; });
+    if (!series.length) { body.innerHTML = ph("TODO: loss curve has no loss values"); return; }
+    var all = [].concat.apply([], series.map(function (s) { return s.pts; }));
+    var x0 = Math.min.apply(null, all.map(function (p) { return p[0]; }));
+    var x1 = Math.max.apply(null, all.map(function (p) { return p[0]; }));
+    var ymin = Math.min.apply(null, all.map(function (p) { return p[1]; }));
+    var ymax = Math.max.apply(null, all.map(function (p) { return p[1]; }));
+    var yLo = Math.floor(ymin), yHi = Math.ceil(ymax); yHi = yLo + Math.max(1, Math.ceil((yHi - yLo) / 4)) * 4;
+    if (x1 === x0) x1 = x0 + 1;
+    var X = function (v) { return m.l + (v - x0) / (x1 - x0) * (W - m.l - m.r); };
+    var Y = function (v) { return H - m.b - (v - yLo) / (yHi - yLo) * (H - m.t - m.b); };
+    var g = "";
+    for (var i = 0; i <= 4; i++) {
+      var yv = yLo + (yHi - yLo) * i / 4;
+      g += '<line class="grid" x1="' + m.l + '" x2="' + (W - m.r) + '" y1="' + Y(yv) + '" y2="' + Y(yv) + '"/>' +
+        '<text class="tick" x="' + (m.l - 6) + '" y="' + (Y(yv) + 3) + '" text-anchor="end">' + (Math.round(yv * 10) / 10) + "</text>";
+      var xv = x0 + (x1 - x0) * i / 4;
+      g += '<text class="tick" x="' + X(xv) + '" y="' + (H - m.b + 16) + '" text-anchor="middle">' + Math.round(xv) + "</text>";
+    }
+    g += '<text class="tick" x="' + ((W + m.l) / 2) + '" y="' + (H - 4) + '" text-anchor="middle">step</text>';
+    series.forEach(function (s) {
+      g += '<polyline class="line ' + s.cls + '" points="' + s.pts.map(function (p) { return X(p[0]).toFixed(1) + "," + Y(p[1]).toFixed(1); }).join(" ") + '"/>';
+      if (s.pts.length < 40) s.pts.forEach(function (p) { g += '<circle class="dot ' + s.cls + '" cx="' + X(p[0]).toFixed(1) + '" cy="' + Y(p[1]).toFixed(1) + '" r="2.5"/>'; });
+    });
+    var legend = '<p class="chart-legend">' + series.map(function (s) {
+      return '<span><i class="' + s.cls + '" aria-hidden="true"></i>' + s.label + "</span>";
+    }).join("") + "</p>";
+    var summary = series.map(function (s) {
+      var last = s.pts[s.pts.length - 1];
+      return s.label.toLowerCase() + " loss " + last[1].toFixed(2) + " at step " + last[0];
+    }).join("; ");
+    body.setAttribute("aria-label", title + ": " + summary);
+    body.innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '" preserveAspectRatio="xMidYMid meet" focusable="false">' + g + "</svg>" + legend;
   }
 
   /* ---------- About: intro, photo, education ---------- */
