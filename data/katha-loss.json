@@ -1,0 +1,4 @@
+{
+  "todo": "TODO: replace rows with the real values exported from the Trainer's log_history. Each row is { step, train_loss, eval_loss }. Leave eval_loss null on steps without an evaluation. Do not invent values.",
+  "rows": []
+}
