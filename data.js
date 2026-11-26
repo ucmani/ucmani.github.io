@@ -137,7 +137,7 @@ window.KATHA = {
 // featured: shown at the top of the home page
 // short: one-line description for the featured list
 // stack: tags on the card and project page
-// links: [{ label, url, note? }]. Leave it out for no links. They show beside the tags;
+// links: [{ label, url, note?, download? }] (download: true makes a file download link). Leave it out for no links. They show beside the tags;
 //   add { title: "Links", links: true } to sections to list them with notes as well
 // page: false keeps a project on the work page only, with no project page
 // sections: the project page, in order. Add, remove or reorder freely.
@@ -494,7 +494,7 @@ window.PROJECTS = [
     short: "A ~31M-parameter Llama-style language model, pretrained from scratch on a free Colab T4",
     summary: "A ~31M-parameter Llama-architecture language model pretrained from random initialisation on TinyStories, using the Hugging Face stack on a free Google Colab T4. A learning project covering the full pretraining workflow, not a production model.",
     stack: ["PyTorch", "Hugging Face Transformers", "Datasets", "Trainer", "torch.profiler", "Google Colab (T4)"],
-    links: [{ label: "Hugging Face" }],
+    links: [{ label: "Hugging Face", url: "https://huggingface.co/ucmani/Katha-31M" }, { label: "Training and profiling doc (PDF)", url: "docs/katha-31m-training-and-profiling.pdf", download: true }],
     sections: [
       {
         title: "Highlights",
@@ -588,11 +588,11 @@ window.PROJECTS = [
           rows: [
             ["Starting loss", String(K.startLoss)],
             ["ln(vocab)", K.lnVocab.toFixed(2)],
-            ["Final train loss", "TODO: final train loss"],
-            ["Final eval loss", "TODO: final eval loss"],
-            ["Tokens per second (T4)", "TODO: tokens per second"],
-            ["Total training time", "TODO: total training time"],
-            ["Peak GPU memory", "TODO: peak GPU memory"]
+            ["Final train loss", "1.5068"],
+            ["Final eval loss", "1.5102"],
+            ["Tokens per second (T4)", "~31,400 measured per micro-batch (about 34,700 with gradient accumulation, compute only)"],
+            ["Total training time", "About 3 hours"],
+            ["Peak GPU memory", "3.82 GiB"]
           ]
         },
         chart: { title: "Training and evaluation loss", src: K.lossCurveFile }
@@ -604,10 +604,10 @@ window.PROJECTS = [
           title: "Profiling findings",
           head: ["Finding", "Value"],
           rows: [
-            ["Top operations by GPU time", "TODO: top operations by GPU time"],
-            ["Share in matrix multiplications", "TODO: approximate share in matmuls"],
-            ["Share in elementwise operations", "TODO: approximate share in elementwise ops"],
-            ["Takeaway", "TODO: one takeaway sentence"]
+            ["Top operations by GPU time", "Elementwise ops (norms, RoPE, SwiGLU), matrix multiplies, and the softmax / cross-entropy loss over the 49k vocabulary, each roughly a quarter of GPU time"],
+            ["Share in matrix multiplications", "~23%"],
+            ["Share in elementwise operations", "~25% (plus ~16% in fp32→fp16 casts and copies)"],
+            ["Takeaway", "Only about a quarter of GPU time goes to matmuls, so the step is memory-bound at this scale and MFU is just 10%. The 49k vocabulary alone takes more than a fifth of the step."]
           ]
         }
       }

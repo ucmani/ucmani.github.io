@@ -171,6 +171,7 @@
       if (meta && p.summary) meta.setAttribute("content", p.summary);
 
       var linkItem = function (l) {
+        if (l.url && l.download) return '<a class="out" href="' + esc(l.url) + '" download>' + esc(l.label) + ' <span aria-hidden="true">↓</span></a>';
         return l.url ? '<a class="out" href="' + esc(l.url) + '">' + esc(l.label) + ' <span aria-hidden="true">↗</span></a>' : ph(l.label + " link");
       };
       var linkHtml = (p.links || []).map(linkItem).filter(Boolean).join("");
