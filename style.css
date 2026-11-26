@@ -265,7 +265,7 @@ code { font: 0.85em var(--mono); background: var(--bg-elevated); padding: 0.1em 
   background: var(--bg-elevated);
 }
 .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0%; }
-.portrait-wrap figcaption { margin-top: 0.9rem; font: 0.68rem/1.6 var(--mono); color: var(--fg-muted); }
+.portrait-wrap figcaption { text-align: center; margin-top: 0.9rem; font: 0.68rem/1.6 var(--mono); color: var(--fg-muted); }
 .about-section {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
